@@ -3,9 +3,9 @@
 /* Controllers */
 
 
-function TrackController($scope) {
+function TrackController($scope, $timeout) {
 	
-	/*
+	
 	function MidiPlayer() {
 		this.playNote = function (note, voice, volume) {
 			var delay = 0; 
@@ -42,8 +42,16 @@ function TrackController($scope) {
 	
 	}
 
+	var m = new MidiPlayer();
+	m.init();
 	
-	*/
+    $scope.play = function(){
+        m.playNote(50,0,128)
+        mytimeout = $timeout($scope.play,1000);
+    }
+	
+	var player = $timeout($scope.play,1000);
+	
 	function newTrack(i,j) {
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
