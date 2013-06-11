@@ -15,6 +15,22 @@
 
   <div>Angular seed app: v<span app-version></span></div>
 
+  <div ng-controller="TrackController">
+  	<ul>
+  		<li ng-repeat="track in tracks">
+  			<table>
+	  			<tr ng-repeat="i in [] | range:track.i">
+	  				<td ng-repeat="i in [] | range:track.i">
+	  	          		({{($parent.$parent).$index}} {{$parent.$index}} {{$index}})
+	            	</td>
+	            </tr>
+            </table>
+  			{{track}}
+  		</li>
+  		{{track}}
+  	</ul>
+  </div>
+
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   -->
