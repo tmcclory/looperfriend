@@ -9,7 +9,7 @@ function MidiPlayer() {
 		MIDI.noteOn(voice, note+36, 127, delay);
 	}
 	
-	this.init = function() {
+	this.init = function(cb) {
 		MIDI.loadPlugin({
 		soundfontUrl: "./soundfont/",
 		instrument: [ "acoustic_grand_piano", "synth_drum", "percussive_organ", "clavinet"],
@@ -30,6 +30,7 @@ function MidiPlayer() {
 			MIDI.noteOff(0, note2, delay + 3.75);
 			MIDI.noteOn(0, note3, velocity, delay);
 			MIDI.noteOff(0, note3, delay + 4.75);
+			cb();
 		}
 	});
 	}

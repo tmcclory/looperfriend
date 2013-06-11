@@ -4,64 +4,48 @@
 
 
 function TrackController($scope, $timeout) {
+	var t,track, m, player, pattern, note,
+		i, j, k, loopLength, beat, done = false;
+	m = new MidiPlayer();
+	//m.init();
+	beat=0;
+	loopLength = 16;
 	
-	/*
-	function MidiPlayer() {
-		this.playNote = function (note, voice, volume) {
-			var delay = 0; 
-			//var velocity = 127; // how hard the note hits
-			// play the note
-			MIDI.setVolume(voice, volume);
-			MIDI.noteOn(voice, note+36, 127, delay);
-		}
-		
-		this.init = function() {
-			MIDI.loadPlugin({
-			soundfontUrl: "./soundfont/",
-			instrument: [ "acoustic_grand_piano", "synth_drum", "percussive_organ", "clavinet"],
-			callback: function() {
-				MIDI.programChange(1, 118);
-				MIDI.programChange(2, 17);
-				MIDI.programChange(3, 7);
-				var delay = 0; // play one note every quarter second
-				var note = 50; // the MIDI note
-				var note2 = 54; // the MIDI note
-				var note3 = 57; // the MIDI note
-				var velocity = 127; // how hard the note hits
-				// play the note
-				MIDI.setVolume(0, 127);
-				MIDI.noteOn(0, note, velocity, delay);
-				MIDI.noteOff(0, note, delay + 2.75);
-				MIDI.noteOn(0, note2, velocity, delay);
-				MIDI.noteOff(0, note2, delay + 3.75);
-				MIDI.noteOn(0, note3, velocity, delay);
-				MIDI.noteOff(0, note3, delay + 4.75);
+	function finish() {
+		$scope.play = function(){
+			for(i=0; i <$scope.tracks.length; i++) {
+				track = $scope.tracks[i];
+				//console.log(track.pattern);
+				for(note in track.pattern[beat]) {
+					m.playNote(parseInt(note),0,127); //Is this parsing performant?
+				}
 			}
-		});
-		}
-	
+			beat = (beat+1)%loopLength;
+		    player = $timeout($scope.play,100);
+		    
+		};
+		
+		player = $timeout($scope.play,100);
 	}
-	*/
-	var m = new MidiPlayer();
-	m.init();
 	
-    $scope.play = function(){
-        m.playNote(50,0,128)
-        player = $timeout($scope.play,1000);
-    }
-	
-	var player = $timeout($scope.play,1000);
+	m.init(finish);
 	
 	function newTrack(i,j) {
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
+		
+		pattern = [];
+		for(k=0;  k<i; k+=1) {
+			pattern.push({});
+		}
+		pattern[0][50]=true;
 		return {
 			'i': i,
 			'j': j,
-			'pattern' : []
+			'pattern' : pattern
 		};
 	}
-	var t = newTrack();
+	t = newTrack();
 	$scope.tracks = [t];
 }
 
