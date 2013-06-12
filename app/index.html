@@ -18,6 +18,8 @@
 
 </head>
 <body>
+	
+	<!--
   <ul class="menu">
     <li><a href="#/view1">view1</a></li>
     <li><a href="#/view2">view2</a></li>
@@ -26,14 +28,15 @@
   <div ng-view></div>
 
   <div>Angular seed app: v<span app-version></span></div>
-
+   -->
   <div ng-controller="TrackController">
   	<ul>
   		<li ng-repeat="track in tracks">
   			<table>
 	  			<tr ng-repeat="i in [] | range:track.i">
-	  				<td ng-repeat="i in [] | range:track.i">
-	  					<input type="checkbox" ng-model="track.pattern[$parent.$index][$index]">
+	  				<td ng-repeat="j in [] | range:track.j">
+	  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)"></button>
+	  				<!--	<input type="checkbox" ng-model="track.pattern[$index][$parent.$index]"> -->
 	            	</td>
 	            </tr>
             </table>

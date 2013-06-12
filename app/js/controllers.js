@@ -4,8 +4,8 @@
 
 
 function TrackController($scope, $timeout) {
-	var t,track, m, player, pattern, note,
-		i, j, k, l, loopLength, beat, done = false;
+	var t,track, m, player, note,
+		i, j, k, l, loopLength, beat, done = false, max=50;
 	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
@@ -15,16 +15,18 @@ function TrackController($scope, $timeout) {
 			for(i=0; i <$scope.tracks.length; i++) {
 				track = $scope.tracks[i];
 				var trackBeat = track.pattern[beat];
+				/*
 				for(j=0; j<trackBeat.length; j+=1) {
 					if(trackBeat[j]) {
-						m.playNote(j+16,0,127);
+						m.playNote(max-j,0,127);
 					}
 				}
-				/*
-				for(note in track.pattern[beat]) {
-					m.playNote(parseInt(note),0,127); //Is this parsing performant?
-				}
 				*/
+				
+				for(note in track.pattern[beat]) {
+					m.playNote(max-parseInt(note),0,127); //Is this parsing performant?
+				}
+				
 			}
 			beat = (beat+1)%loopLength;
 		    player = $timeout($scope.play,100);
@@ -34,20 +36,37 @@ function TrackController($scope, $timeout) {
 		player = $timeout($scope.play,100);
 	}
 	
+
+	
 	m.init(onPlayerLoad);
 	
 	function newTrack(i,j) {
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
+		var pattern = []
 		
-		pattern = [];
+		function switchCoordinate(i,j) {
+			console.log(i + "," + j)
+			//track =  $scopes.tracks[t];
+			if(j in pattern[i]) {
+				delete track.pattern[i][j]
+			}
+			else {
+				pattern[i][j] = true;
+			}
+		}
+		
 		for(k=0;  k<i; k+=1) {
-			pattern.push([]);
+			pattern.push({});
+			/*
 			for(l=0; l<j; l+=1) {
 				pattern[k][l] = false
 			}
+			*/
 		}
+		//pattern[0][50] = "true"
 		return {
+			'switchCoordinate' : switchCoordinate,
 			'i': i,
 			'j': j,
 			'pattern' : pattern
