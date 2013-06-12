@@ -33,11 +33,10 @@
   			<table>
 	  			<tr ng-repeat="i in [] | range:track.i">
 	  				<td ng-repeat="i in [] | range:track.i">
-	  	          		({{($parent.$parent).$index}} {{$parent.$index}} {{$index}})
+	  					<input type="checkbox" ng-model="track.pattern[$parent.$index][$index]">
 	            	</td>
 	            </tr>
             </table>
-  			{{track}}
   		</li>
   	</ul>
   </div>

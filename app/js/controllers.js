@@ -5,20 +5,26 @@
 
 function TrackController($scope, $timeout) {
 	var t,track, m, player, pattern, note,
-		i, j, k, loopLength, beat, done = false;
+		i, j, k, l, loopLength, beat, done = false;
 	m = new MidiPlayer();
-	//m.init();
 	beat=0;
 	loopLength = 16;
 	
-	function finish() {
+	function onPlayerLoad() {
 		$scope.play = function(){
 			for(i=0; i <$scope.tracks.length; i++) {
 				track = $scope.tracks[i];
-				//console.log(track.pattern);
+				var trackBeat = track.pattern[beat];
+				for(j=0; j<trackBeat.length; j+=1) {
+					if(trackBeat[j]) {
+						m.playNote(j+16,0,127);
+					}
+				}
+				/*
 				for(note in track.pattern[beat]) {
 					m.playNote(parseInt(note),0,127); //Is this parsing performant?
 				}
+				*/
 			}
 			beat = (beat+1)%loopLength;
 		    player = $timeout($scope.play,100);
@@ -28,7 +34,7 @@ function TrackController($scope, $timeout) {
 		player = $timeout($scope.play,100);
 	}
 	
-	m.init(finish);
+	m.init(onPlayerLoad);
 	
 	function newTrack(i,j) {
 		if(typeof(i)==='undefined') {i = 16;}
@@ -36,9 +42,11 @@ function TrackController($scope, $timeout) {
 		
 		pattern = [];
 		for(k=0;  k<i; k+=1) {
-			pattern.push({});
+			pattern.push([]);
+			for(l=0; l<j; l+=1) {
+				pattern[k][l] = false
+			}
 		}
-		pattern[0][50]=true;
 		return {
 			'i': i,
 			'j': j,
