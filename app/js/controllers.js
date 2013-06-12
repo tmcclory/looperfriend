@@ -15,13 +15,6 @@ function TrackController($scope, $timeout) {
 			for(i=0; i <$scope.tracks.length; i++) {
 				track = $scope.tracks[i];
 				var trackBeat = track.pattern[beat];
-				/*
-				for(j=0; j<trackBeat.length; j+=1) {
-					if(trackBeat[j]) {
-						m.playNote(max-j,0,127);
-					}
-				}
-				*/
 				
 				for(note in track.pattern[beat]) {
 					m.playNote(max-parseInt(note),0,127); //Is this parsing performant?
@@ -46,8 +39,6 @@ function TrackController($scope, $timeout) {
 		var pattern = []
 		
 		function switchCoordinate(i,j) {
-			console.log(i + "," + j)
-			//track =  $scopes.tracks[t];
 			if(j in pattern[i]) {
 				delete track.pattern[i][j]
 			}
@@ -58,11 +49,6 @@ function TrackController($scope, $timeout) {
 		
 		for(k=0;  k<i; k+=1) {
 			pattern.push({});
-			/*
-			for(l=0; l<j; l+=1) {
-				pattern[k][l] = false
-			}
-			*/
 		}
 		//pattern[0][50] = "true"
 		return {

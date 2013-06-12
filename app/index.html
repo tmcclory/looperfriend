@@ -35,8 +35,7 @@
   			<table>
 	  			<tr ng-repeat="i in [] | range:track.i">
 	  				<td ng-repeat="j in [] | range:track.j">
-	  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)"></button>
-	  				<!--	<input type="checkbox" ng-model="track.pattern[$index][$parent.$index]"> -->
+	  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)">
 	            	</td>
 	            </tr>
             </table>
