@@ -29,9 +29,21 @@
 
   <div>Angular seed app: v<span app-version></span></div>
    -->
+   
   <div ng-controller="TrackController">
+  	<button ng-click="model.play()">Play</button>
+  	<button ng-click="model.stop()">Stop</button>
+  	<button ng-click="model.addTrack()">Add track</button>
+  	
   	<ul>
-  		<li ng-repeat="track in tracks">
+  		<li ng-repeat="track in model.tracks">
+  			<form name="voice">
+      			<input type="radio" ng-model="track.voice" value="0">   
+      			<input type="radio" ng-model="track.voice" value="1">  
+      			<input type="radio" ng-model="track.voice" value="2">  
+      			<input type="radio" ng-model="track.voice" value="3"> 
+      			<tt>voice</tt><br/>
+     		</form>
   			<table>
 	  			<tr ng-repeat="i in [] | range:track.i">
 	  				<td ng-repeat="j in [] | range:track.j">

@@ -4,20 +4,26 @@
 
 
 function TrackController($scope, $timeout) {
-	var t,track, m, player, note,
+	var t,track, m, player, note, model,
 		i, j, k, l, loopLength, beat, done = false, max=50;
 	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
 	
+	function addTrack() {
+		var t = newTrack();
+		$scope.model.tracks.push(t);
+	}
+	
 	function onPlayerLoad() {
 		$scope.play = function(){
-			for(i=0; i <$scope.tracks.length; i++) {
-				track = $scope.tracks[i];
+			for(i=0; i <$scope.model.tracks.length; i++) {
+				track = $scope.model.tracks[i];
 				var trackBeat = track.pattern[beat];
 				
 				for(note in track.pattern[beat]) {
-					m.playNote(max-parseInt(note),0,127); //Is this parsing performant?
+					m.playNote(max-parseInt(note),
+						parseInt(track.voice),127); //Is this parsing performant?
 				}
 				
 			}
@@ -26,10 +32,19 @@ function TrackController($scope, $timeout) {
 		    
 		};
 		
+		 $scope.stop = function(){
+			$timeout.cancel(player);
+		}
+	}
+	
+	function play() {
 		player = $timeout($scope.play,100);
 	}
 	
-
+	function stop() {
+		$scope.stop()
+	}
+	
 	
 	m.init(onPlayerLoad);
 	
@@ -40,7 +55,8 @@ function TrackController($scope, $timeout) {
 		
 		function switchCoordinate(i,j) {
 			if(j in pattern[i]) {
-				delete track.pattern[i][j]
+				console.log("deleting");
+				delete this.pattern[i][j]
 			}
 			else {
 				pattern[i][j] = true;
@@ -51,15 +67,21 @@ function TrackController($scope, $timeout) {
 			pattern.push({});
 		}
 		//pattern[0][50] = "true"
+		console.log($scope.model);
 		return {
 			'switchCoordinate' : switchCoordinate,
 			'i': i,
 			'j': j,
 			'pattern' : pattern
 		};
+
 	}
+
+	$scope.model = {'play' : play,
+					'stop' : stop,
+					'addTrack' : addTrack};
 	t = newTrack();
-	$scope.tracks = [t];
+	$scope.model.tracks = [t]; 	
 }
 
 
@@ -76,6 +98,7 @@ angular.module('myApp.controllers', []).
 			if(typeof(i)==='undefined') {i = 16;}
 			if(typeof(j)==='undefined') {j = 16;}
 			return {
+				'voice' : 0,
 				'i': i,
 				'j': j,
 				'pattern' : []
