@@ -4,6 +4,9 @@
 
 
 function TrackController($scope, $timeout) {
+	var t,track, m, player, note, model,
+		i, j, k, l, loopLength, beat, done = false, max=50,
+		activePatterns, scenes, activeScene;
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -15,15 +18,12 @@ function TrackController($scope, $timeout) {
 		return objKeys;
 	}
 	
-	
-	var t,track, m, player, note, model,
-		i, j, k, l, loopLength, beat, done = false, max=50,
-		activePatterns;
+	scenes = [[0,0],[0,0]];
+	activeScene = 0;
 	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
-	
-	activePatterns = {};
+	//activePatterns = {};
 	
 	
 	function onPlayerLoad() {
@@ -68,7 +68,7 @@ function TrackController($scope, $timeout) {
 	m.init(onPlayerLoad);
 	
 	function newTrack(i,j) {
-		var activePatterns = {};
+		var activePatterns = {0:true};
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
 		var pattern = []
@@ -91,6 +91,24 @@ function TrackController($scope, $timeout) {
 			}
 		}
 		
+		function isActivePattern(i) {
+			if(i in this.activePatterns) {
+				return 'on';
+			}
+			else {
+				return 'off';
+			}
+		}
+		
+		function getCoordinate(pattern, i,j) {
+			if(j in pattern[i]) {
+				return 'on'
+			}
+			else {
+				return 'off';
+			}
+		}
+		
 		function switchCoordinate(pattern, i,j) {
 			if(j in pattern[i]) {
 				delete pattern[i][j]
@@ -109,12 +127,15 @@ function TrackController($scope, $timeout) {
 		return {
 			'addPattern' : addPattern,
 			'switchCoordinate' : switchCoordinate,
+			'getCoordinate' : getCoordinate,
 			'switchActivePattern' : switchActivePattern,
+			'isActivePattern' : isActivePattern,
 			'i': i,
 			'j': j,
 			'activePatterns' : activePatterns,
-			'patterns' : patterns
-		};
+			'patterns' : patterns,
+			'voice' : 0
+ 		};
 
 	}
 
@@ -126,7 +147,9 @@ function TrackController($scope, $timeout) {
 	$scope.model = {'play' : play,
 					'stop' : stop,
 					'playing' : false,
-					'addTrack' : addTrack};
+					'addTrack' : addTrack,
+					'scenes' :  scenes,
+					'activeScene' : activeScene};
 	t = newTrack();
 	$scope.model.tracks = [t]; 	
 

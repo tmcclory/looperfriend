@@ -19,6 +19,33 @@
   <script src="./inc/Base64.js" type="text/javascript"></script>
   <script src="./inc/base64binary.js" type="text/javascript"></script>
 
+  <style>
+     #container{
+        float:left;
+        position:relative;
+     }
+     .scene-on{
+     	background-color:green;
+     	border-color:black;
+     	border-style:solid;
+		border-width:1px;
+		float:left;
+		height: 10px; /* or whatever you want */
+		position:relative;
+		width: 10px; /* or whatever you want */
+	}
+	.scene-off{
+		background-color:white;
+		border-color:black;
+     	border-style:solid;
+		border-width:1px;
+		float:left;
+		height: 10px; /* or whatever you want */
+		position:relative;
+		width: 10px; /* or whatever you want */
+	}
+  </style>
+
 </head>
 <body>
 	
@@ -33,39 +60,55 @@
   <div>Angular seed app: v<span app-version></span></div>
    -->
    
-  <div ng-controller="TrackController">
+  <div ng-controller="TrackController" >
+  	
   	<button ng-click="model.play()">Play</button>
   	<button ng-click="model.stop()">Stop</button>
-  	<button ng-click="model.addTrack()">Add track</button>
+  	<button ng-click="model.addTrack()">Add track</button></br>
   	
-  	<ul>
-  		<li ng-repeat="track in model.tracks">
-  			<form name="voice">
-			<button ng-click="track.addPattern()">+</button>
-      			<input type="radio" ng-model="track.voice" value="0">   
-      			<input type="radio" ng-model="track.voice" value="1">  
-      			<input type="radio" ng-model="track.voice" value="2">  
-      			<input type="radio" ng-model="track.voice" value="3"> 
-      			<tt>voice</tt><br/>
-     		</form>
-     		<span ng-repeat="i in [] | range:track.patterns.length">
-     			<input type="checkbox" ng-click="track.switchActivePattern(i)">
-     		</span>
-     		<tabs>
-  				<pane ng-repeat="pattern in track.patterns"  heading="">
-	  				<table>
-			  			<tr ng-repeat="i in [] | range:track.i">
-			  				<td ng-repeat="j in [] | range:track.j">
-			  					<input type="checkbox" ng-click="track.switchCoordinate(pattern, $index,$parent.$index)">
-			            	</td>
-			            </tr>
-		            </table>
-	            </pane>
-	            
-           </tabs>
-           
-  		</li>
-  	</ul>
+  	<div id="container" class="row">
+  		<div class="span4">
+		  	<ul class="span4">
+		  		<li ng-repeat="track in model.tracks">
+					<button ng-click="track.addPattern()">+</button>
+		  			<form name="voice">
+		      			<input type="radio" ng-model="track.voice" value="0">   
+		      			<input type="radio" ng-model="track.voice" value="1">  
+		      			<input type="radio" ng-model="track.voice" value="2">  
+		      			<input type="radio" ng-model="track.voice" value="3"> 
+		      			<tt>voice</tt><br/>
+		     		</form>
+		     		<div ng-repeat="i in [] | range:track.patterns.length">
+		     			<div class="scene-{{track.isActivePattern(i)}}" ng-click="track.switchActivePattern(i)"></div>
+		     		</div></br>
+		     		<tabs>
+		  				<pane ng-repeat="pattern in track.patterns"  heading="">
+			  				<table>
+					  			<tr ng-repeat="i in [] | range:track.i">
+					  				<td ng-repeat="j in [] | range:track.j">
+					  					<input type="checkbox" class="coordinate-{{track.getCoordinate(pattern, $index,$parent.$index)}}" 
+					  					ng-click="track.switchCoordinate(pattern, $index,$parent.$index)">
+					            	</td>
+					            </tr>
+				            </table>
+			            </pane>
+			            
+		           </tabs>
+		           
+		  		</li>
+		  	</ul>
+	  	</div>
+  	
+  		<div class="span2" >
+			<form name="scene">
+				<span >
+	  				<input ng-repeat="i in [] | range:model.scenes.length"
+	  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
+	  			</span>
+	 		</form>
+ 		</div>
+	  	
+  	</div>
   </div>
 
   <!-- In production use:
