@@ -38,7 +38,10 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function play() {
-		player = $timeout($scope.play,100);
+		if(!$scope.model.playing) {
+			$scope.model.playing = true;
+			player = $timeout($scope.play,100);
+		}
 	}
 	
 	function stop() {
@@ -79,9 +82,11 @@ function TrackController($scope, $timeout) {
 
 	$scope.model = {'play' : play,
 					'stop' : stop,
+					'playing' : false,
 					'addTrack' : addTrack};
 	t = newTrack();
 	$scope.model.tracks = [t]; 	
+
 }
 
 

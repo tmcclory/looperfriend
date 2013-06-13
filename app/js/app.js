@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('myApp', ['myApp.filters', 'myApp.services']);
+angular.module('myApp', ['myApp.filters', 'myApp.services','ui.bootstrap']);
+//angular.module('myModule', ['ui.bootstrap']);
+//var injector = angular.injector(['ng', 'myModule'])
 
 //angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers']);
 

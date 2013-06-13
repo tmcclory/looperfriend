@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="css/app.css"/>
   <link rel="stylesheet" href="css/bootstrap.css"/>
   
+  <script src="lib/angular/angular.js"></script>
+  <script src="js/ui-bootstrap-tpls-0.3.0.js"></script>
+  
   <!-- Midi.js includes -->
   <script src="./js/MIDI/AudioDetect.js" type="text/javascript"></script>
   <script src="./js/MIDI/LoadPlugin.js" type="text/javascript"></script>
@@ -44,13 +47,17 @@
       			<input type="radio" ng-model="track.voice" value="3"> 
       			<tt>voice</tt><br/>
      		</form>
-  			<table>
-	  			<tr ng-repeat="i in [] | range:track.i">
-	  				<td ng-repeat="j in [] | range:track.j">
-	  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)">
-	            	</td>
-	            </tr>
-            </table>
+     		<tabs>
+  				<pane>
+	  				<table>
+			  			<tr ng-repeat="i in [] | range:track.i">
+			  				<td ng-repeat="j in [] | range:track.j">
+			  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)">
+			            	</td>
+			            </tr>
+		            </table>
+	            </pane>
+           </tabs>
   		</li>
   	</ul>
   </div>
@@ -58,14 +65,13 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   -->
-  <script src="lib/angular/angular.js"></script>
+  
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
   <script src="js/jquery-1.9.1.js"></script>
-  <script src="js/bootstrap.js"></script>
   <script src="js/midiPlayer.js"></script>
 </body>
 </html>
