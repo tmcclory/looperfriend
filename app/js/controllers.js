@@ -4,28 +4,43 @@
 
 
 function TrackController($scope, $timeout) {
+	
+	function keys(obj) {
+		var i, objKeys = [];
+		for(i in obj) {
+				if (obj.hasOwnProperty(i)) {
+				objKeys.push(i);
+			}
+		}
+		return objKeys;
+	}
+	
+	
 	var t,track, m, player, note, model,
-		i, j, k, l, loopLength, beat, done = false, max=50;
+		i, j, k, l, loopLength, beat, done = false, max=50,
+		activePatterns;
 	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
 	
-	function addTrack() {
-		var t = newTrack();
-		$scope.model.tracks.push(t);
-	}
+	activePatterns = {};
+	
 	
 	function onPlayerLoad() {
+		var patternID, trackKeys;
 		$scope.play = function(){
 			for(i=0; i <$scope.model.tracks.length; i++) {
 				track = $scope.model.tracks[i];
-				var trackBeat = track.pattern[beat];
-				
-				for(note in track.pattern[beat]) {
-					m.playNote(max-parseInt(note),
-						parseInt(track.voice),127); //Is this parsing performant?
+				trackKeys = keys(track.activePatterns);
+				for(j=0; j<trackKeys.length; j+=1) {
+					patternID = trackKeys[j];
+					var pattern = track.patterns[parseInt(patternID,10)]
+					var trackBeat = pattern[beat];
+					for(note in trackBeat) {
+						m.playNote(max-parseInt(note),
+							parseInt(track.voice),127); //Is this parsing performant?
+					}
 				}
-				
 			}
 			beat = (beat+1)%loopLength;
 		    player = $timeout($scope.play,100);
@@ -45,6 +60,7 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function stop() {
+		$scope.model.playing = false;
 		$scope.stop()
 	}
 	
@@ -52,14 +68,32 @@ function TrackController($scope, $timeout) {
 	m.init(onPlayerLoad);
 	
 	function newTrack(i,j) {
+		var activePatterns = {};
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
 		var pattern = []
+		var patterns = []
 		
-		function switchCoordinate(i,j) {
+		function addPattern() {
+			pattern  = []
+			for(k=0;  k<i; k+=1) {
+				pattern.push({});
+			}
+			this.patterns.push(pattern)
+		}
+		
+		function switchActivePattern(i) {
+			if(i in this.activePatterns) {
+				delete this.activePatterns[i]
+			}
+			else {
+				this.activePatterns[i] = true;
+			}
+		}
+		
+		function switchCoordinate(pattern, i,j) {
 			if(j in pattern[i]) {
-				console.log("deleting");
-				delete this.pattern[i][j]
+				delete pattern[i][j]
 			}
 			else {
 				pattern[i][j] = true;
@@ -69,15 +103,24 @@ function TrackController($scope, $timeout) {
 		for(k=0;  k<i; k+=1) {
 			pattern.push({});
 		}
+		patterns.push(pattern)
+		//patterns.push(pattern)
 		//pattern[0][50] = "true"
-		console.log($scope.model);
 		return {
+			'addPattern' : addPattern,
 			'switchCoordinate' : switchCoordinate,
+			'switchActivePattern' : switchActivePattern,
 			'i': i,
 			'j': j,
-			'pattern' : pattern
+			'activePatterns' : activePatterns,
+			'patterns' : patterns
 		};
 
+	}
+
+	function addTrack() {
+		var t = newTrack();
+		$scope.model.tracks.push(t);
 	}
 
 	$scope.model = {'play' : play,

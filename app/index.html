@@ -41,23 +41,29 @@
   	<ul>
   		<li ng-repeat="track in model.tracks">
   			<form name="voice">
+			<button ng-click="track.addPattern()">+</button>
       			<input type="radio" ng-model="track.voice" value="0">   
       			<input type="radio" ng-model="track.voice" value="1">  
       			<input type="radio" ng-model="track.voice" value="2">  
       			<input type="radio" ng-model="track.voice" value="3"> 
       			<tt>voice</tt><br/>
      		</form>
+     		<span ng-repeat="i in [] | range:track.patterns.length">
+     			<input type="checkbox" ng-click="track.switchActivePattern(i)">
+     		</span>
      		<tabs>
-  				<pane>
+  				<pane ng-repeat="pattern in track.patterns"  heading="">
 	  				<table>
 			  			<tr ng-repeat="i in [] | range:track.i">
 			  				<td ng-repeat="j in [] | range:track.j">
-			  					<input type="checkbox" ng-click="track.switchCoordinate($index,$parent.$index)">
+			  					<input type="checkbox" ng-click="track.switchCoordinate(pattern, $index,$parent.$index)">
 			            	</td>
 			            </tr>
 		            </table>
 	            </pane>
+	            
            </tabs>
+           
   		</li>
   	</ul>
   </div>
