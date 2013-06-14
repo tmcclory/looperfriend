@@ -17,21 +17,38 @@ function TrackController($scope, $timeout) {
 		}
 		return objKeys;
 	}
-	
-	scenes = [[0,0],[0,0]];
+	//scenes[track][scene] = activePatterns
+	scenes = {0: [{0:true},{0:true}]}; //Initial value
+	//scenes = [[0,0],[0,0]];
 	activeScene = 0;
 	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
+	var trackCount = 0
+	var sceneCount = 2;
 	//activePatterns = {};
 	
+	function addScene() {
+		
+		var tracks = $scope.model.tracks.length
+		for(i=0; i<$scope.model.tracks.length; i+=1) {
+			$scope.model[i][$scope.model.sceneCount] = {};
+		}
+		$scope.model.sceneCount+=1
+		
+	}
 	
 	function onPlayerLoad() {
 		var patternID, trackKeys;
+		
 		$scope.play = function(){
 			for(i=0; i <$scope.model.tracks.length; i++) {
 				track = $scope.model.tracks[i];
-				trackKeys = keys(track.activePatterns);
+				activeScene = $scope.model.activeScene
+				trackKeys = keys($scope.model.scenes[i][activeScene]);
+				console.log(trackKeys)
+				console.log($scope.model.scenes[i][activeScene])
+				console.log($scope.model)
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
 					var pattern = track.patterns[parseInt(patternID,10)]
@@ -67,7 +84,7 @@ function TrackController($scope, $timeout) {
 	
 	m.init(onPlayerLoad);
 	
-	function newTrack(i,j) {
+	function newTrack(i,j, trackID) {
 		var activePatterns = {0:true};
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
@@ -83,16 +100,20 @@ function TrackController($scope, $timeout) {
 		}
 		
 		function switchActivePattern(i) {
-			if(i in this.activePatterns) {
-				delete this.activePatterns[i]
+			var scene = $scope.model.activeScene
+			var patterns = $scope.model.scenes[this.trackID][scene]
+			if(i in patterns) {
+				delete patterns[i]
 			}
 			else {
-				this.activePatterns[i] = true;
+				patterns[i] = true;
 			}
 		}
 		
 		function isActivePattern(i) {
-			if(i in this.activePatterns) {
+			var scene = $scope.model.activeScene;
+			var patterns = $scope.model.scenes[this.trackID][scene];
+			if(i in patterns) {
 				return 'on';
 			}
 			else {
@@ -101,6 +122,9 @@ function TrackController($scope, $timeout) {
 		}
 		
 		function getCoordinate(pattern, i,j) {
+			if(i===0) {
+				
+			}
 			if(j in pattern[i]) {
 				return 'on'
 			}
@@ -134,13 +158,19 @@ function TrackController($scope, $timeout) {
 			'j': j,
 			'activePatterns' : activePatterns,
 			'patterns' : patterns,
-			'voice' : 0
+			'voice' : 0,
+			'trackID' : trackID
  		};
 
 	}
 
 	function addTrack() {
-		var t = newTrack();
+		var t = newTrack(16,16,trackCount);
+		$scope.model.scenes[trackCount] = []
+		for(i=0; i<$scope.model.scenes[0].length; i++) {
+			$scope.model.scenes[trackCount].push({})
+		}
+		trackCount+=1;
 		$scope.model.tracks.push(t);
 	}
 
@@ -149,8 +179,10 @@ function TrackController($scope, $timeout) {
 					'playing' : false,
 					'addTrack' : addTrack,
 					'scenes' :  scenes,
-					'activeScene' : activeScene};
-	t = newTrack();
+					'activeScene' : activeScene,
+					'sceneCount' :  sceneCount};
+	t = newTrack(16,16,trackCount);
+	trackCount+=1
 	$scope.model.tracks = [t]; 	
 
 }
@@ -175,7 +207,8 @@ angular.module('myApp.controllers', []).
 				'pattern' : []
 			};
 		}
-		var t = newTrack();
+		var t = newTrack(16,16,trackCount);
+		trackCount+=1;
 		$scope.tracks = [t];
 	}
   
