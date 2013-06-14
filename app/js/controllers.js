@@ -5,7 +5,7 @@
 
 function TrackController($scope, $timeout) {
 	var t,track, m, player, note, model,
-		i, j, k, l, loopLength, beat, done = false, max=50,
+		i, j, k, l, loopLength, beat, done = false, max=24,
 		activePatterns, scenes, activeScene;
 	
 	function keys(obj) {
@@ -46,16 +46,13 @@ function TrackController($scope, $timeout) {
 				track = $scope.model.tracks[i];
 				activeScene = $scope.model.activeScene
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
-				console.log(trackKeys)
-				console.log($scope.model.scenes[i][activeScene])
-				console.log($scope.model)
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
 					var pattern = track.patterns[parseInt(patternID,10)]
 					var trackBeat = pattern[beat];
 					for(note in trackBeat) {
 						m.playNote(max-parseInt(note),
-							parseInt(track.voice),127); //Is this parsing performant?
+							parseInt(track.voice),track.volume); //Is this parsing performant?
 					}
 				}
 			}
@@ -159,13 +156,14 @@ function TrackController($scope, $timeout) {
 			'activePatterns' : activePatterns,
 			'patterns' : patterns,
 			'voice' : 0,
-			'trackID' : trackID
+			'trackID' : trackID,
+			'volume' : 127
  		};
 
 	}
 
 	function addTrack() {
-		var t = newTrack(16,16,trackCount);
+		var t = newTrack(24,16,trackCount);
 		$scope.model.scenes[trackCount] = []
 		for(i=0; i<$scope.model.scenes[0].length; i++) {
 			$scope.model.scenes[trackCount].push({})
@@ -181,7 +179,7 @@ function TrackController($scope, $timeout) {
 					'scenes' :  scenes,
 					'activeScene' : activeScene,
 					'sceneCount' :  sceneCount};
-	t = newTrack(16,16,trackCount);
+	t = newTrack(24,16,trackCount);
 	trackCount+=1
 	$scope.model.tracks = [t]; 	
 

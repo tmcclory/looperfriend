@@ -78,6 +78,7 @@
 		      			<input type="radio" ng-model="track.voice" value="3"> 
 		      			<tt>voice</tt><br/>
 		     		</form>
+		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 		     		<div ng-repeat="i in [] | range:track.patterns.length">
 		     			<div class="scene-{{track.isActivePattern(i)}}" ng-click="track.switchActivePattern(i)"></div>
 		     		</div></br>

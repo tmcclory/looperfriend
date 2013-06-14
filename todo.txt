@@ -3,6 +3,14 @@
 * Design
 ** Collapse
 
-* Scene
+X Scenes
 
+X Make drums work
+
+X Volume
+
+?
 * Arrangment
+* Stops
+* Alignments
+* Removing stuff
