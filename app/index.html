@@ -71,6 +71,7 @@
 		  	<ul class="span4">
 		  		<li ng-repeat="track in model.tracks">
 					<button ng-click="track.addPattern()">+</button>
+					<button ng-click="track.isCollapsed = !track.isCollapsed">-</button>
 		  			<form name="voice">
 		      			<input type="radio" ng-model="track.voice" value="0">   
 		      			<input type="radio" ng-model="track.voice" value="1">  
@@ -82,20 +83,21 @@
 		     		<div ng-repeat="i in [] | range:track.patterns.length">
 		     			<div class="scene-{{track.isActivePattern(i)}}" ng-click="track.switchActivePattern(i)"></div>
 		     		</div></br>
-		     		<tabs>
-		  				<pane ng-repeat="pattern in track.patterns">
-			  				<table>
-					  			<tr ng-repeat="i in [] | range:track.i">
-					  				<td ng-repeat="j in [] | range:track.j">
-					  					<input type="checkbox" class="coordinate-{{track.getCoordinate(pattern, $index,$parent.$index)}}" 
-					  					ng-click="track.switchCoordinate(pattern, $index,$parent.$index)">
-					            	</td>
-					            </tr>
-				            </table>
-			            </pane>
-			            
-		           </tabs>
-		           
+		     		<div collapse="track.isCollapsed">
+			     		<tabs>
+			  				<pane ng-repeat="pattern in track.patterns">
+				  				<table>
+						  			<tr ng-repeat="i in [] | range:track.i">
+						  				<td ng-repeat="j in [] | range:track.j">
+						  					<input type="checkbox" class="coordinate-{{track.getCoordinate(pattern, $index,$parent.$index)}}" 
+						  					ng-click="track.switchCoordinate(pattern, $index,$parent.$index)">
+						            	</td>
+						            </tr>
+					            </table>
+				            </pane>
+				            
+			           </tabs>
+		           </div>
 		  		</li>
 		  	</ul>
 	  	</div>

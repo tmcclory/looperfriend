@@ -157,7 +157,8 @@ function TrackController($scope, $timeout) {
 			'patterns' : patterns,
 			'voice' : 0,
 			'trackID' : trackID,
-			'volume' : 127
+			'volume' : 127,
+			'isCollapsed' : false
  		};
 
 	}
