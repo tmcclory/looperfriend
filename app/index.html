@@ -22,7 +22,7 @@
 
 
 </head>
-<body bgcolor="#547980">
+<body>
 	
 	<!--
   <ul class="menu">
@@ -43,8 +43,8 @@
   	
   	<div id="container" class="row">
   		<div class="span4">
-		  	<ul class="span4">
-		  		<li ng-repeat="track in model.tracks">
+		  	<ul>
+		  		<li ng-repeat="track in model.tracks" class="track-window">
 					<button ng-click="track.addPattern()">+</button>
 					<button ng-click="track.isCollapsed = !track.isCollapsed">-</button>
 		  			<form name="voice">

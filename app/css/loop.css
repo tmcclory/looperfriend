@@ -41,3 +41,7 @@ darkColor = "594F4F"
 		position:relative;
 		width: 10px; /* or whatever you want */
 	}
+	.track-window{
+		background-color:/*wcol*/#45ADA8;
+		margin:5px;
+	}
