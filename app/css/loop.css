@@ -1,0 +1,43 @@
+/********************* Colour reference chart****************
+*************************** comment ********* colour ******** 
+
+box on colour       		bng              #E5FCC2
+box off colour       		bfg              #9DE0AD
+box window colour           wcol             #45ADA8
+box bg colour             	bgc           	 #547980
+
+
+onColor = "#E5FCC2"
+offColor = "9DE0AD"
+bgColor = "547980"
+windowColor = "45ADA8"
+darkColor = "594F4F"
+
+
+*/
+
+ 
+     #container{
+        float:left;
+        position:relative;
+     }
+     .scene-on{
+     	background-color:/*bng*/#E5FCC2;
+     	border-color:/*bgc*/#547980;
+     	border-style:solid;
+		border-width:1px;
+		float:left;
+		height: 10px; /* or whatever you want */
+		position:relative;
+		width: 10px; /* or whatever you want */
+	}
+	.scene-off{
+		background-color:/*bfg*/#9DE0AD;
+		border-color:/*bgc*/#547980;
+     	border-style:solid;
+		border-width:1px;
+		float:left;
+		height: 10px; /* or whatever you want */
+		position:relative;
+		width: 10px; /* or whatever you want */
+	}
