@@ -21,9 +21,9 @@ darkColor = "594F4F"
         float:left;
         position:relative;
      }
-     .scene-on{
+     .square-on{
      	background-color:/*bng*/#E5FCC2;
-     	border-color:/*bgc*/#547980;
+     	border-color:/*wcol*/#45ADA8;
      	border-style:solid;
 		border-width:1px;
 		float:left;
@@ -31,9 +31,9 @@ darkColor = "594F4F"
 		position:relative;
 		width: 10px; /* or whatever you want */
 	}
-	.scene-off{
+	.square-off{
 		background-color:/*bfg*/#9DE0AD;
-		border-color:/*bgc*/#547980;
+		border-color:/*wcol*/#45ADA8;
      	border-style:solid;
 		border-width:1px;
 		float:left;
