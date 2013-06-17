@@ -14,3 +14,7 @@ X Volume
 * Stops
 * Alignments
 * Removing stuff
+* Look into performance
+* Playing samples
+
+Better Voices

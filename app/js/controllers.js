@@ -6,7 +6,7 @@
 function TrackController($scope, $timeout) {
 	var t,track, m, player, note, model,
 		i, j, k, l, loopLength, beat, done = false, max=24,
-		activePatterns, scenes, activeScene;
+		activePatterns, scenes, activeScene, trackCount, sceneCount;
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -21,20 +21,20 @@ function TrackController($scope, $timeout) {
 	scenes = {0: [{0:true},{0:true}]}; //Initial value
 	//scenes = [[0,0],[0,0]];
 	activeScene = 0;
-	m = new MidiPlayer();
+	//m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
-	var trackCount = 0
-	var sceneCount = 2;
+	trackCount = 0;
+	sceneCount = 2;
 	//activePatterns = {};
 	
 	function addScene() {
 		
-		var tracks = $scope.model.tracks.length
+		var tracks = $scope.model.tracks.length;
 		for(i=0; i<$scope.model.tracks.length; i+=1) {
 			$scope.model[i][$scope.model.sceneCount] = {};
 		}
-		$scope.model.sceneCount+=1
+		$scope.model.sceneCount+=1;
 		
 	}
 	
@@ -42,17 +42,20 @@ function TrackController($scope, $timeout) {
 		var patternID, trackKeys;
 		
 		$scope.play = function(){
-			for(i=0; i <$scope.model.tracks.length; i++) {
+			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
-				activeScene = $scope.model.activeScene
+				activeScene = $scope.model.activeScene;
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
-					var pattern = track.patterns[parseInt(patternID,10)]
+					var pattern = track.patterns[parseInt(patternID,10)];
 					var trackBeat = pattern[beat];
 					for(note in trackBeat) {
-						m.playNote(max-parseInt(note),
+					/*	m.playNote(max-parseInt(note),
 							parseInt(track.voice),track.volume); //Is this parsing performant?
+					*/
+						//console.log("Playing note..." + (max-note))
+						playNote(max-parseInt(note),parseInt(track.voice));
 					}
 				}
 			}
@@ -62,6 +65,7 @@ function TrackController($scope, $timeout) {
 		};
 		
 		 $scope.stop = function(){
+		 	//oscillator.stop(3);
 			$timeout.cancel(player);
 		}
 	}
@@ -79,7 +83,8 @@ function TrackController($scope, $timeout) {
 	}
 	
 	
-	m.init(onPlayerLoad);
+	//m.init(onPlayerLoad);
+	onPlayerLoad();
 	
 	function newTrack(i,j, trackID) {
 		var activePatterns = {0:true};

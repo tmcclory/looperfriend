@@ -22,7 +22,7 @@
 
 
 </head>
-<body background="#547980">
+<body bgcolor="#547980">
 	
 	<!--
   <ul class="menu">
@@ -65,6 +65,7 @@
 				  				<table>
 						  			<tr ng-repeat="i in [] | range:track.i">
 						  				<td ng-repeat="j in [] | range:track.j">
+						  					<!-- <input type="checkbox"  -->
 						  					<div class="square-{{track.getCoordinate(pattern, $index,$parent.$index)}}" 
 						  					ng-click="track.switchCoordinate(pattern, $index,$parent.$index)"></div>
 						            	</td>
@@ -100,6 +101,7 @@
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
   <script src="js/jquery-1.9.1.js"></script>
-  <script src="js/midiPlayer.js"></script>
+  <!-- <script src="js/midiPlayer.js"></script> -->
+  <script src="js/osc.js"></script>
 </body>
 </html>
