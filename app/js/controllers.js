@@ -64,6 +64,40 @@ function TrackController($scope, $timeout) {
 		    
 		};
 		
+		$scope.playBar = function(bar){
+			var b =0;
+			var numBeats = 16;
+			var startTime = oscContext.currentTime;
+			//console.log(startTime)
+			var beatLength = .1;
+			for(b=0; b<numBeats; b+=1) {
+				//start
+				var stopTime = startTime + ((b+1) * beatLength)
+				var thisStart = startTime + ((b) * beatLength)
+				//console.log(stopTime)
+				for(i=0; i <$scope.model.tracks.length; i+=1) {
+					track = $scope.model.tracks[i];
+					activeScene = $scope.model.activeScene;
+					trackKeys = keys($scope.model.scenes[i][activeScene]);
+					for(j=0; j<trackKeys.length; j+=1) {
+						patternID = trackKeys[j];
+						var pattern = track.patterns[parseInt(patternID,10)];
+						var trackBeat = pattern[b];
+						for(note in trackBeat) {
+						/*	m.playNote(max-parseInt(note),
+								parseInt(track.voice),track.volume); //Is this parsing performant?
+						*/
+							//console.log("Playing note..." + (max-note))
+							playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+						}
+					}
+				}
+			}
+			//beat = (beat+1)%loopLength;
+		    player = $timeout($scope.playBar,1000);
+		    
+		};
+		
 		 $scope.stop = function(){
 		 	//oscillator.stop(3);
 			$timeout.cancel(player);
@@ -73,7 +107,7 @@ function TrackController($scope, $timeout) {
 	function play() {
 		if(!$scope.model.playing) {
 			$scope.model.playing = true;
-			player = $timeout($scope.play,100);
+			player = $timeout($scope.playBar,1000);
 		}
 	}
 	

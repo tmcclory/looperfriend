@@ -18,7 +18,8 @@ oscillator.noteOn && oscillator.noteOn(0);
 
 */
 
-function playNote(note, type) {
+function playNote(note, type, startTime, stopTime) {
+	console.log("Playing note..." +note + " " +startTime+ " "+ stopTime)
 	oscillator = oscContext.createOscillator();
 	oscillator.type = type; // sine wave
 	oscillator.frequency.value = frequencyMap[note];
@@ -27,7 +28,7 @@ function playNote(note, type) {
     oscillator.connect(gainNode);
     gainNode.connect(oscContext.destination);
     gainNode.gain.value = 0.1;
-	oscillator.start(0);
-	oscillator.stop(oscContext.currentTime +0.25)
+	oscillator.start(startTime);
+	oscillator.stop(stopTime)
 	
 }
