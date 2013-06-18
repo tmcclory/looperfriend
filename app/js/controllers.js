@@ -26,6 +26,8 @@ function TrackController($scope, $timeout) {
 	loopLength = 16;
 	trackCount = 0;
 	sceneCount = 2;
+	var startTime = 0
+	var totalBeats = 0;
 	//activePatterns = {};
 	
 	function addScene() {
@@ -64,37 +66,45 @@ function TrackController($scope, $timeout) {
 		    
 		};
 		
+		//var startTime;// = oscContext.currentTime;
 		$scope.playBar = function(bar){
 			var b =0;
 			var numBeats = 16;
-			var startTime = oscContext.currentTime;
-			//console.log(startTime)
+			
+			console.log(startTime)
 			var beatLength = .1;
-			for(b=0; b<numBeats; b+=1) {
-				//start
-				var stopTime = startTime + ((b+1) * beatLength)
-				var thisStart = startTime + ((b) * beatLength)
-				//console.log(stopTime)
-				for(i=0; i <$scope.model.tracks.length; i+=1) {
-					track = $scope.model.tracks[i];
-					activeScene = $scope.model.activeScene;
-					trackKeys = keys($scope.model.scenes[i][activeScene]);
-					for(j=0; j<trackKeys.length; j+=1) {
-						patternID = trackKeys[j];
-						var pattern = track.patterns[parseInt(patternID,10)];
+
+			//console.log(stopTime)
+			for(i=0; i <$scope.model.tracks.length; i+=1) {
+				track = $scope.model.tracks[i];
+				activeScene = $scope.model.activeScene;
+				trackKeys = keys($scope.model.scenes[i][activeScene]);
+				for(j=0; j<trackKeys.length; j+=1) {
+					patternID = trackKeys[j];
+					var beatCount = totalBeats
+					var pattern = track.patterns[parseInt(patternID,10)];
+						for(b=0; b<numBeats; b+=1) {
+						//start
+						
+						var stopTime = startTime + ((beatCount+1) * beatLength) + .1
+						var thisStart = startTime + ((beatCount) * beatLength) + .1
+						beatCount+=1
 						var trackBeat = pattern[b];
 						for(note in trackBeat) {
 						/*	m.playNote(max-parseInt(note),
 								parseInt(track.voice),track.volume); //Is this parsing performant?
 						*/
 							//console.log("Playing note..." + (max-note))
-							playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+							//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+							playSample((max-parseInt(note))%3, thisStart, stopTime);
+						
 						}
 					}
 				}
 			}
+			totalBeats+=numBeats
 			//beat = (beat+1)%loopLength;
-		    player = $timeout($scope.playBar,1000);
+		    player = $timeout($scope.playBar,1600);
 		    
 		};
 		
@@ -107,7 +117,9 @@ function TrackController($scope, $timeout) {
 	function play() {
 		if(!$scope.model.playing) {
 			$scope.model.playing = true;
-			player = $timeout($scope.playBar,1000);
+			startTime = oscContext.currentTime;
+			totalBeats = 0;
+			player = $timeout($scope.playBar,0);
 		}
 	}
 	
