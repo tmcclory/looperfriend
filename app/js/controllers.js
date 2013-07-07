@@ -95,8 +95,8 @@ function TrackController($scope, $timeout) {
 								parseInt(track.voice),track.volume); //Is this parsing performant?
 						*/
 							//console.log("Playing note..." + (max-note))
-							//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
-							playSample((max-parseInt(note))%3, thisStart, stopTime);
+							playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+							//playSample((max-parseInt(note))%3, thisStart, stopTime);
 						
 						}
 					}
