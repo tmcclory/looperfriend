@@ -46,10 +46,10 @@ function playNote(note, type, startTime, stopTime) {
 	oscillator.frequency.value = frequencyMap[note];
 	oscillator.connect(oscContext.destination);
 	gainNode = oscContext.createGainNode();
-    var reverbNode = oscContext.createConvolver();
-    reverbNode.buffer = impulseResponseBuffer;
-    oscillator.connect(reverbNode);
-    reverbNode.connect(gainNode)
+    //var reverbNode = oscContext.createConvolver();
+    //reverbNode.buffer = impulseResponseBuffer;
+    oscillator.connect(gainNode);
+    //reverbNode.connect(gainNode)
     gainNode.connect(oscContext.destination);
     gainNode.gain.value = 0.1;
 

@@ -81,6 +81,7 @@
   	
   		<div class="span2" >
 			<form name="scene">
+				<button ng-click="model.addScene()">+</button>
 				<span >
 	  				<input ng-repeat="i in [] | range:model.sceneCount"
 	  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
@@ -101,7 +102,7 @@
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
   <script src="js/jquery-1.9.1.js"></script>
-  <!-- <script src="js/midiPlayer.js"></script> -->
+  <script src="js/midiPlayer.js"></script>
   <script src="js/osc.js"></script>
   <script src="js/sampler.js"></script>
 </body>

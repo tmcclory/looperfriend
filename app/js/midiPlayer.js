@@ -9,6 +9,14 @@ function MidiPlayer() {
 		MIDI.noteOn(voice, note+36, 127, delay);
 	}
 	
+	this.queueNote = function (note, voice, volume, time) {
+		var delay = 0; 
+		//var velocity = 127; // how hard the note hits
+		// play the note
+		MIDI.setVolume(voice, volume);
+		MIDI.noteOn(voice, note+36, 127, time);
+	}
+	
 	this.init = function(cb) {
 		MIDI.loadPlugin({
 		soundfontUrl: "./soundfont/",

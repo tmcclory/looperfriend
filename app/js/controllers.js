@@ -21,7 +21,7 @@ function TrackController($scope, $timeout) {
 	scenes = {0: [{0:true},{0:true}]}; //Initial value
 	//scenes = [[0,0],[0,0]];
 	activeScene = 0;
-	//m = new MidiPlayer();
+	m = new MidiPlayer();
 	beat=0;
 	loopLength = 16;
 	trackCount = 0;
@@ -34,7 +34,7 @@ function TrackController($scope, $timeout) {
 		
 		var tracks = $scope.model.tracks.length;
 		for(i=0; i<$scope.model.tracks.length; i+=1) {
-			$scope.model[i][$scope.model.sceneCount] = {};
+			$scope.model.scenes[i][$scope.model.sceneCount] = {};
 		}
 		$scope.model.sceneCount+=1;
 		
@@ -71,6 +71,7 @@ function TrackController($scope, $timeout) {
 			var b =0;
 			var numBeats = 16;
 			
+			startTime = oscContext.currentTime;
 			console.log(startTime)
 			var beatLength = .1;
 
@@ -81,21 +82,21 @@ function TrackController($scope, $timeout) {
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
-					var beatCount = totalBeats
+					var beatCount = 0
 					var pattern = track.patterns[parseInt(patternID,10)];
 						for(b=0; b<numBeats; b+=1) {
-						//start
+						//start 
 						
 						var stopTime = startTime + ((beatCount+1) * beatLength) + .1
 						var thisStart = startTime + ((beatCount) * beatLength) + .1
 						beatCount+=1
 						var trackBeat = pattern[b];
 						for(note in trackBeat) {
-						/*	m.playNote(max-parseInt(note),
-								parseInt(track.voice),track.volume); //Is this parsing performant?
-						*/
+							m.queueNote(max-parseInt(note),
+						parseInt(track.voice),track.volume,thisStart); //Is this parsing performant?
+						
 							//console.log("Playing note..." + (max-note))
-							playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+							//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
 							//playSample((max-parseInt(note))%3, thisStart, stopTime);
 						
 						}
@@ -129,8 +130,8 @@ function TrackController($scope, $timeout) {
 	}
 	
 	
-	//m.init(onPlayerLoad);
-	onPlayerLoad();
+	m.init(onPlayerLoad);
+	//onPlayerLoad();
 	
 	function newTrack(i,j, trackID) {
 		var activePatterns = {0:true};
@@ -223,17 +224,20 @@ function TrackController($scope, $timeout) {
 		trackCount+=1;
 		$scope.model.tracks.push(t);
 	}
-
+	
 	$scope.model = {'play' : play,
 					'stop' : stop,
 					'playing' : false,
 					'addTrack' : addTrack,
 					'scenes' :  scenes,
 					'activeScene' : activeScene,
-					'sceneCount' :  sceneCount};
+					'sceneCount' :  sceneCount,
+					'addScene' : addScene};
+
 	t = newTrack(24,16,trackCount);
 	trackCount+=1
 	$scope.model.tracks = [t]; 	
+	
 
 }
 

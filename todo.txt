@@ -1,3 +1,31 @@
+* Model specification
+* Save/load
+* Arrangment view
+* Consolidate MIDI.js/sampler
+
+* Experiment: Controllable buffer length
+
+* Design decisions
+** Display current timestep
+** Transparency?
+** Sleekening
+*** Better buttons
+*** Alignments
+*** Remove bullets
+*** Better scene radio buttons
+*** Track Settings
+**** Upload sounds
+**** Choose sounds
+**** 
+
+=============================================
+Side project: Webslicer
+
+Use echo nest to chop songs, save diced samples
+
+
+=============================================
+
 * Save/load
 
 * Design
