@@ -20,6 +20,9 @@ function TrackController($scope, $timeout) {
 	//scenes[track][scene] = activePatterns
 	scenes = {0: [{0:true},{0:true}]}; //Initial value
 	//scenes = [[0,0],[0,0]];
+	var list = 'list'
+	var arrangement = [0,1,0,1];
+	var arrangement2 =  [ [ [[[0,2],[1,2]] ,2] , [ [[3,2],[4,2]] ,2] ] ,2];
 	activeScene = 0;
 	m = new MidiPlayer();
 	beat=0;
@@ -42,32 +45,34 @@ function TrackController($scope, $timeout) {
 	
 	function onPlayerLoad() {
 		var patternID, trackKeys;
-		
-		$scope.play = function(){
+		/*
+		$scope.playScene = function(scene) {			
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
-				activeScene = $scope.model.activeScene;
+				activeScene = scene;
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
 					var pattern = track.patterns[parseInt(patternID,10)];
 					var trackBeat = pattern[beat];
 					for(note in trackBeat) {
-					/*	m.playNote(max-parseInt(note),
-							parseInt(track.voice),track.volume); //Is this parsing performant?
-					*/
 						//console.log("Playing note..." + (max-note))
 						playNote(max-parseInt(note),parseInt(track.voice));
 					}
 				}
 			}
-			beat = (beat+1)%loopLength;
+		};
+		*/
+	/*	
+		$scope.play = function(){
+			$scope.playScene($scope.model.activeScene)
+			//beat = (beat+1)%loopLength;
 		    player = $timeout($scope.play,100);
 		    
 		};
-		
+		*/
 		//var startTime;// = oscContext.currentTime;
-		$scope.playBar = function(bar){
+		$scope.playScene = function(scene){
 			var b =0;
 			var numBeats = 16;
 			
@@ -78,7 +83,7 @@ function TrackController($scope, $timeout) {
 			//console.log(stopTime)
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
-				activeScene = $scope.model.activeScene;
+				activeScene = scene;
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
@@ -103,10 +108,17 @@ function TrackController($scope, $timeout) {
 					}
 				}
 			}
-			totalBeats+=numBeats
+			//totalBeats+=numBeats
+			//beat = (beat+1)%loopLength;
+		    //player = $timeout($scope.playBar,1600);
+		    
+		};
+		
+		$scope.playBar = function(bar){ 
+			$scope.playScene($scope.model.activeScene)
+			//totalBeats+=numBeats
 			//beat = (beat+1)%loopLength;
 		    player = $timeout($scope.playBar,1600);
-		    
 		};
 		
 		 $scope.stop = function(){
@@ -114,6 +126,7 @@ function TrackController($scope, $timeout) {
 			$timeout.cancel(player);
 		}
 	}
+	
 	
 	function play() {
 		if(!$scope.model.playing) {
@@ -124,11 +137,37 @@ function TrackController($scope, $timeout) {
 		}
 	}
 	
+	
 	function stop() {
 		$scope.model.playing = false;
 		$scope.stop()
 	}
 	
+	
+	function playArrangement(arrangement) {
+		stop()
+		var i =0;
+			startTime = oscContext.currentTime;
+		 //	totalBeats = 0;
+		
+		for(i=0; i<arrangement.length; i+=1) {
+			var playFunction = (function (i) {
+				return function () {$scope.playScene(arrangement[i])}})(i)
+			player = $timeout(playFunction,1600*i);
+			
+		}
+	}
+	
+	function playArrangementString(arrangementString) {
+		arrangement = arrangementString.split("");
+		// TODO sanity check
+		playArrangement(arrangement);
+	}
+	
+	function playMainArrangement() {
+		console.log("Playing " + $scope.model.arrangementString)
+		playArrangementString($scope.model.arrangementString);
+	}
 	
 	m.init(onPlayerLoad);
 	//onPlayerLoad();
@@ -218,7 +257,7 @@ function TrackController($scope, $timeout) {
 	function addTrack() {
 		var t = newTrack(24,16,trackCount);
 		$scope.model.scenes[trackCount] = []
-		for(i=0; i<$scope.model.scenes[0].length; i++) {
+		for(i=0; i<$scope.model.scenes[0].length; i+=1) {
 			$scope.model.scenes[trackCount].push({})
 		}
 		trackCount+=1;
@@ -226,6 +265,9 @@ function TrackController($scope, $timeout) {
 	}
 	
 	$scope.model = {'play' : play,
+					'playArrangement': playArrangement,
+					'playMainArrangement': playMainArrangement,
+					'arrangementString' : '1',
 					'stop' : stop,
 					'playing' : false,
 					'addTrack' : addTrack,
