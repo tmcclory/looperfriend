@@ -1,0 +1,10 @@
+1. Tracks
+  List of tracks
+    List of patterns
+    List of settings
+
+2. Scenes
+  List of sets. One for each track.
+
+3. Arrangements
+  List of lists of scene IDs

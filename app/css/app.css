@@ -1,5 +1,10 @@
 /* app css stylesheet */
 
+ul
+{
+    list-style-type: none;
+}
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;
