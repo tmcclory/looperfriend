@@ -37,14 +37,31 @@
    
   <div ng-controller="TrackController" >
   	
-  	<button ng-click="model.play()">Play</button>
-  	<button ng-click="model.stop()">Stop</button>
-  	<button ng-click="model.addTrack()">Add track</button>
-  	<button ng-click="model.playMainArrangement()">Arrangement</button>
-  	
-        <input type="text" ng-model="model.arrangementString"  size="30"
-               placeholder="1">
-      
+  	<div class="row">
+  		<div class="span4">
+		  	<button ng-click="model.play()"><i class="icon-play"></i></button>
+		  	<button ng-click="model.stop()"><i class="icon-stop"></i></button>
+		  	<button ng-click="model.addTrack()"><i class="icon-plus"></i></button>
+	  	</div>
+	  	
+  		<div class="span4" >
+			<form name="scene">
+				<button ng-click="model.addScene()">+</button>
+				<span >
+	  				<input ng-repeat="i in [] | range:model.sceneCount"
+	  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
+	  			</span>
+	 		</form>
+ 		</div>
+	  	
+	  	
+	  	<div class="span4">
+		  	<button ng-click="model.playMainArrangement()">Arrangement</button>
+		  	
+		        <input type="text" ng-model="model.arrangementString"  size="30"
+		               placeholder="1">
+        </div>	
+    </div>  
   	
   	</br>
   	
@@ -86,15 +103,6 @@
 		  	</ul>
 	  	</div>
   	
-  		<div class="span2" >
-			<form name="scene">
-				<button ng-click="model.addScene()">+</button>
-				<span >
-	  				<input ng-repeat="i in [] | range:model.sceneCount"
-	  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
-	  			</span>
-	 		</form>
- 		</div>
 	  	
   	</div>
   </div>
