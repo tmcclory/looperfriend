@@ -4,7 +4,7 @@
 
 
 function TrackController($scope, $timeout) {
-	var t,track, m, player, note, model,
+	var t,track, m, player, armedPlayer, note, model,
 		i, j, k, l, loopLength, beat, done = false, max=24,
 		activePatterns, scenes, activeScene, trackCount, sceneCount;
 	
@@ -42,39 +42,38 @@ function TrackController($scope, $timeout) {
 	
 	function onPlayerLoad() {
 		var patternID, trackKeys;
-		/*
-		$scope.playScene = function(scene) {			
-			for(i=0; i <$scope.model.tracks.length; i+=1) {
-				track = $scope.model.tracks[i];
-				activeScene = scene;
-				trackKeys = keys($scope.model.scenes[i][activeScene]);
-				for(j=0; j<trackKeys.length; j+=1) {
-					patternID = trackKeys[j];
-					var pattern = track.patterns[parseInt(patternID,10)];
-					var trackBeat = pattern[beat];
-					for(note in trackBeat) {
-						//console.log("Playing note..." + (max-note))
-						playNote(max-parseInt(note),parseInt(track.voice));
-					}
-				}
+		
+		$scope.playArmedPattern = function(beat) {			
+			track = $scope.model.tracks[$scope.model.armedPattern[0]];
+			patternID = trackKeys[$scope.model.armedPattern[1]];
+			var pattern = track.patterns[parseInt(patternID,10)];
+			var trackBeat = pattern[beat];
+			var t = oscContext.currentTime
+			for(note in trackBeat) {
+				//console.log("Playing note..." + (max-note))
+				var start = oscContext.currentTime;
+				var stop = start + .1; // TODO remove fixed length
+				playNote(max-parseInt(note),parseInt(track.voice), start, stop);
+			}
+			if(beat<=15) {
+				armedPlayer = $timeout(function() {$scope.playArmedPattern(beat+1);},100);
 			}
 		};
-		*/
-	/*	
-		$scope.play = function(){
+		
+		
+		$scope.playArmed = function(){
 			$scope.playScene($scope.model.activeScene)
 			//beat = (beat+1)%loopLength;
-		    player = $timeout($scope.play,100);
+		    armedPlayer = $timeout($scope.play,100);
 		    
 		};
-		*/
+		
 		//var startTime;// = oscContext.currentTime;
 		$scope.playScene = function(scene){
 			var b =0;
 			var numBeats = 16;
 			
 			startTime = oscContext.currentTime;
-			console.log(startTime)
 			var beatLength = .1;
 
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
@@ -85,25 +84,28 @@ function TrackController($scope, $timeout) {
 					patternID = trackKeys[j];
 					var beatCount = 0
 					var pattern = track.patterns[parseInt(patternID,10)];
+					if(!(i===$scope.model.armedPattern[0] && j===$scope.model.armedPattern[1])) {
 						for(b=0; b<numBeats; b+=1) {
-						//start 
-						
-						var stopTime = startTime + ((beatCount+1) * beatLength) + .1
-						var thisStart = startTime + ((beatCount) * beatLength) + .1
-						beatCount+=1
-						var trackBeat = pattern[b];
-						for(note in trackBeat) {
-							m.queueNote(max-parseInt(note),
-						parseInt(track.voice),track.volume,thisStart); //Is this parsing performant?
-						
-							//console.log("Playing note..." + (max-note))
-							//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
-							//playSample((max-parseInt(note))%3, thisStart, stopTime);
-						
+							//start 
+							
+							var stopTime = startTime + ((beatCount+1) * beatLength) + .1
+							var thisStart = startTime + ((beatCount) * beatLength) + .1
+							beatCount+=1
+							var trackBeat = pattern[b];
+							for(note in trackBeat) {
+								m.queueNote(max-parseInt(note),
+							parseInt(track.voice),track.volume,thisStart); //Is this parsing performant?
+							
+								//console.log("Playing note..." + (max-note))
+								//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
+								//playSample((max-parseInt(note))%3, thisStart, stopTime);
+							
+							}
 						}
 					}
 				}
 			}
+			$scope.playArmedPattern(0)
 			//totalBeats+=numBeats
 			//beat = (beat+1)%loopLength;
 		    //player = $timeout($scope.playBar,1600);
@@ -137,6 +139,8 @@ function TrackController($scope, $timeout) {
 	function stop() {
 		$scope.model.playing = false;
 		$scope.stop()
+		$timeout.cancel(player);
+		$timeout.cancel(armedPlayer);
 	}
 	
 	
@@ -160,7 +164,6 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function playMainArrangement() {
-		console.log("Playing " + $scope.model.arrangementString)
 		playArrangementString($scope.model.arrangementString);
 	}
 	
@@ -241,7 +244,8 @@ function TrackController($scope, $timeout) {
 			'voice' : 0,
 			'trackID' : trackID,
 			'volume' : 127,
-			'isCollapsed' : false
+			'isCollapsed' : false,
+			'armedPattern' : [0,0]
  		};
 
 	}
@@ -266,7 +270,8 @@ function TrackController($scope, $timeout) {
 					'scenes' :  scenes,
 					'activeScene' : activeScene,
 					'sceneCount' :  sceneCount,
-					'addScene' : addScene};
+					'addScene' : addScene,
+					'armedPattern' : [0,0]};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1
