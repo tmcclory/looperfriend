@@ -17,9 +17,7 @@ function TrackController($scope, $timeout) {
 		}
 		return objKeys;
 	}
-	//scenes[track][scene] = activePatterns
 	scenes = {0: [{0:true},{0:true}]}; //Initial value
-	//scenes = [[0,0],[0,0]];
 	var list = 'list'
 	var arrangement = [0,1,0,1];
 	var arrangement2 =  [ [ [[[0,2],[1,2]] ,2] , [ [[3,2],[4,2]] ,2] ] ,2];
@@ -31,8 +29,7 @@ function TrackController($scope, $timeout) {
 	sceneCount = 2;
 	var startTime = 0
 	var totalBeats = 0;
-	//activePatterns = {};
-	
+
 	function addScene() {
 		
 		var tracks = $scope.model.tracks.length;
@@ -80,7 +77,6 @@ function TrackController($scope, $timeout) {
 			console.log(startTime)
 			var beatLength = .1;
 
-			//console.log(stopTime)
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
 				activeScene = scene;
@@ -148,7 +144,6 @@ function TrackController($scope, $timeout) {
 		stop()
 		var i =0;
 			startTime = oscContext.currentTime;
-		 //	totalBeats = 0;
 		
 		for(i=0; i<arrangement.length; i+=1) {
 			var playFunction = (function (i) {
@@ -170,7 +165,6 @@ function TrackController($scope, $timeout) {
 	}
 	
 	m.init(onPlayerLoad);
-	//onPlayerLoad();
 	
 	function newTrack(i,j, trackID) {
 		var activePatterns = {0:true};
@@ -234,8 +228,6 @@ function TrackController($scope, $timeout) {
 			pattern.push({});
 		}
 		patterns.push(pattern)
-		//patterns.push(pattern)
-		//pattern[0][50] = "true"
 		return {
 			'addPattern' : addPattern,
 			'switchCoordinate' : switchCoordinate,
