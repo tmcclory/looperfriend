@@ -89,7 +89,6 @@ function TrackController($scope, $timeout) {
 					patternID = trackKeys[j];
 					var beatCount = 0;
 					var pattern = track.patterns[parseInt(patternID,10)];
-					console.log($scope.model.armedPattern + " " + patternID + " " + i);
 					if(!(i===$scope.model.armedPattern[0] && parseInt(patternID,10)===$scope.model.armedPattern[1])) {  
 						for(b=0; b<numBeats; b+=1) {
 							//start 
@@ -111,8 +110,9 @@ function TrackController($scope, $timeout) {
 					}
 				}
 			}
-			armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, 100);
-		    
+			if($scope.model.armedPattern) {
+				armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, 100);
+		    }
 		};
 		
 		$scope.playBar = function(bar){ 
@@ -125,9 +125,41 @@ function TrackController($scope, $timeout) {
 		 $scope.stop = function(){
 		 	//oscillator.stop(3);
 			$timeout.cancel(player);
+			console.log(JSON.stringify($scope.model))
+			writeModel("a")
+			readModel("a")
 		}
 	}
 	
+	function writeModel(projectName) {
+		localStorage[projectName] = JSON.stringify($scope.model);
+	}
+	
+	function readModel(projectName) {
+		console.log($scope.model)
+		/*
+		"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":127,"isCollapsed":false,"index":0,"$$hashKey":"008"}]} 
+		 */
+		
+		var inputModel = JSON.parse(localStorage[projectName]);
+		$scope.model.armedPattern = inputModel.armedPattern;
+		$scope.model.sceneCount = inputModel.sceneCount;
+		$scope.model.activeScene = inputModel.activeScene;
+		$scope.model.scenes = inputModel.scenes;
+		$scope.model.playing = inputModel.playing;
+		$scope.model.arrangementString = inputModel.arrangementString;
+		var newTracks = []
+		var i;
+		for(i=0;i<inputModel.tracks.length; i++) {
+			var track = inputModel.tracks[i]
+			//console.log(track)
+			var thisTrack = newTrack(track.i,track.j, track.trackID, track.activePatterns, track.patterns, track.voice, track.volume, track.isCollapsed) 
+			newTracks.push(thisTrack)
+		}
+		$scope.model.tracks = newTracks;
+		console.log($scope.model)
+	}
+ 	
 	
 	function play() {
 		if(!$scope.model.playing) {
@@ -172,12 +204,28 @@ function TrackController($scope, $timeout) {
 	
 	m.init(onPlayerLoad);
 	
-	function newTrack(i,j, trackID) {
-		var activePatterns = {0:true};
+	
+	//"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":127,"isCollapsed":false,"index":0,"$$hashKey":"008"}]}
+	function newTrack(i,j, trackID, activePatterns, patterns, voice, volume, isCollapsed) {
+		//TODO combine index/trackID
 		if(typeof(i)==='undefined') {i = 16;}
 		if(typeof(j)==='undefined') {j = 16;}
-		var pattern = []
-		var patterns = []
+		if(typeof(trackID)==='undefined') {trackID = 0;}
+		if(typeof(activePatterns)==='undefined') {
+			var activePatterns = {0:true};
+		}
+		if(typeof(patterns)==='undefined') {
+			var pattern = []
+			var patterns = []
+			
+			for(k=0;  k<i; k+=1) {
+				pattern.push({});
+			}
+			patterns.push(pattern)
+		}
+		if(typeof(voice)==='undefined') {voice = 0;}
+		if(typeof(volume)==='undefined') {volume = 127;}
+		if(typeof(isCollapsed)==='undefined') {isCollapsed = false;}
 		
 		function addPattern() {
 			pattern  = []
@@ -229,11 +277,8 @@ function TrackController($scope, $timeout) {
 				pattern[i][j] = true;
 			}
 		}
+
 		
-		for(k=0;  k<i; k+=1) {
-			pattern.push({});
-		}
-		patterns.push(pattern)
 		return {
 			'addPattern' : addPattern,
 			'switchCoordinate' : switchCoordinate,
@@ -244,10 +289,10 @@ function TrackController($scope, $timeout) {
 			'j': j,
 			'activePatterns' : activePatterns,
 			'patterns' : patterns,
-			'voice' : 0,
+			'voice' : voice,
 			'trackID' : trackID,
-			'volume' : 127,
-			'isCollapsed' : false,
+			'volume' : volume,
+			'isCollapsed' : isCollapsed,
 			'index' : trackID
  		};
 
@@ -279,13 +324,13 @@ function TrackController($scope, $timeout) {
 					'activeScene' : activeScene,
 					'sceneCount' :  sceneCount,
 					'addScene' : addScene,
-					'armedPattern' : [0,0],
+					'armedPattern' : false,
 					'armPattern' : armPattern};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1
 	$scope.model.tracks = [t]; 	
-	
+	readModel("a")
 
 }
 

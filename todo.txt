@@ -1,4 +1,5 @@
-* Set arm
+X Set arm
+* Fix arm alignment issue
 * Model specification
 * Save/load
 * Arrangment view
