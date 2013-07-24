@@ -44,13 +44,15 @@ function TrackController($scope, $timeout) {
 		var patternID, trackKeys;
 		
 		$scope.playArmedPattern = function(beat) {			
-			track = $scope.model.tracks[$scope.model.armedPattern[0]];
-			patternID = trackKeys[$scope.model.armedPattern[1]];
+			var track = $scope.model.tracks[$scope.model.armedPattern[0]];
+			var patternID = $scope.model.armedPattern[1];
 			var pattern = track.patterns[parseInt(patternID,10)];
 			var trackBeat = pattern[beat];
 			var t = oscContext.currentTime
+
+
 			for(note in trackBeat) {
-				//console.log("Playing note..." + (max-note))
+
 				var start = oscContext.currentTime;
 				var stop = start + .1; // TODO remove fixed length
 				playNote(max-parseInt(note),parseInt(track.voice), start, stop);
@@ -88,9 +90,9 @@ function TrackController($scope, $timeout) {
 						for(b=0; b<numBeats; b+=1) {
 							//start 
 							
-							var stopTime = startTime + ((beatCount+1) * beatLength) + .1
+							var stopTime = startTime + ((beatCount+1) * beatLength); //+ .1
 							var thisStart = startTime + ((beatCount) * beatLength) + .1
-							beatCount+=1
+							beatCount+=1;
 							var trackBeat = pattern[b];
 							for(note in trackBeat) {
 								m.queueNote(max-parseInt(note),
@@ -105,7 +107,7 @@ function TrackController($scope, $timeout) {
 					}
 				}
 			}
-			$scope.playArmedPattern(0)
+			armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, 100);
 			//totalBeats+=numBeats
 			//beat = (beat+1)%loopLength;
 		    //player = $timeout($scope.playBar,1600);
@@ -244,8 +246,7 @@ function TrackController($scope, $timeout) {
 			'voice' : 0,
 			'trackID' : trackID,
 			'volume' : 127,
-			'isCollapsed' : false,
-			'armedPattern' : [0,0]
+			'isCollapsed' : false
  		};
 
 	}
