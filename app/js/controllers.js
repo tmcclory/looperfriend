@@ -47,19 +47,22 @@ function TrackController($scope, $timeout) {
 			var track = $scope.model.tracks[$scope.model.armedPattern[0]];
 			var patternID = $scope.model.armedPattern[1];
 			var pattern = track.patterns[parseInt(patternID,10)];
-			var trackBeat = pattern[beat];
-			var t = oscContext.currentTime
-
-
-			for(note in trackBeat) {
-
-				var start = oscContext.currentTime;
-				var stop = start + .1; // TODO remove fixed length
-				playNote(max-parseInt(note),parseInt(track.voice), start, stop);
+			if (track.isActivePattern(patternID) === 'on') {
+				var trackBeat = pattern[beat];
+				var t = oscContext.currentTime
+	
+	
+				for(note in trackBeat) {
+	
+					var start = oscContext.currentTime;
+					var stop = start + .1; // TODO remove fixed length
+					playNote(max-parseInt(note),parseInt(track.voice), start, stop);
+				}
 			}
 			if(beat<=15) {
 				armedPlayer = $timeout(function() {$scope.playArmedPattern(beat+1);},100);
 			}
+			
 		};
 		
 		
@@ -84,9 +87,10 @@ function TrackController($scope, $timeout) {
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
-					var beatCount = 0
+					var beatCount = 0;
 					var pattern = track.patterns[parseInt(patternID,10)];
-					if(!(i===$scope.model.armedPattern[0] && j===$scope.model.armedPattern[1])) {
+					console.log($scope.model.armedPattern + " " + patternID + " " + i);
+					if(!(i===$scope.model.armedPattern[0] && parseInt(patternID,10)===$scope.model.armedPattern[1])) {  
 						for(b=0; b<numBeats; b+=1) {
 							//start 
 							
@@ -108,9 +112,6 @@ function TrackController($scope, $timeout) {
 				}
 			}
 			armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, 100);
-			//totalBeats+=numBeats
-			//beat = (beat+1)%loopLength;
-		    //player = $timeout($scope.playBar,1600);
 		    
 		};
 		
@@ -246,7 +247,8 @@ function TrackController($scope, $timeout) {
 			'voice' : 0,
 			'trackID' : trackID,
 			'volume' : 127,
-			'isCollapsed' : false
+			'isCollapsed' : false,
+			'index' : trackID
  		};
 
 	}
@@ -261,6 +263,11 @@ function TrackController($scope, $timeout) {
 		$scope.model.tracks.push(t);
 	}
 	
+	function armPattern(track, pattern) {
+		console.log(track+" " +pattern)
+		$scope.model.armedPattern = [track, pattern]
+	}
+	
 	$scope.model = {'play' : play,
 					'playArrangement': playArrangement,
 					'playMainArrangement': playMainArrangement,
@@ -272,7 +279,8 @@ function TrackController($scope, $timeout) {
 					'activeScene' : activeScene,
 					'sceneCount' :  sceneCount,
 					'addScene' : addScene,
-					'armedPattern' : [0,0]};
+					'armedPattern' : [0,0],
+					'armPattern' : armPattern};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1

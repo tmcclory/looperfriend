@@ -85,13 +85,14 @@
 		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 		     		
 			     		<tabs>
-			  				<pane ng-repeat="pattern in track.patterns">
+			  				<pane ng-repeat="p in [] | range:track.patterns.length">
+			  					<button ng-click="model.armPattern(track.index,p)">Arm</button>
 				  				<table>
 						  			<tr ng-repeat="i in [] | range:track.i">
 						  				<td ng-repeat="j in [] | range:track.j">
 						  					<!-- <input type="checkbox"  -->
-						  					<div class="square-{{track.getCoordinate(pattern, $index,$parent.$index)}}" 
-						  					ng-click="track.switchCoordinate(pattern, $index,$parent.$index)"></div>
+						  					<div class="square-{{track.getCoordinate(track.patterns[p], $index,$parent.$index)}}" 
+						  					ng-click="track.switchCoordinate(track.patterns[p], $index,$parent.$index)"></div>
 						            	</td>
 						            </tr>
 					            </table>

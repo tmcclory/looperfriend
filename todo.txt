@@ -1,3 +1,4 @@
+* Set arm
 * Model specification
 * Save/load
 * Arrangment view
