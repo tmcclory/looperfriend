@@ -125,41 +125,8 @@ function TrackController($scope, $timeout) {
 		 $scope.stop = function(){
 		 	//oscillator.stop(3);
 			$timeout.cancel(player);
-			console.log(JSON.stringify($scope.model))
-			writeModel("a")
-			readModel("a")
 		}
-	}
-	
-	function writeModel(projectName) {
-		localStorage[projectName] = JSON.stringify($scope.model);
-	}
-	
-	function readModel(projectName) {
-		console.log($scope.model)
-		/*
-		"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":127,"isCollapsed":false,"index":0,"$$hashKey":"008"}]} 
-		 */
-		
-		var inputModel = JSON.parse(localStorage[projectName]);
-		$scope.model.armedPattern = inputModel.armedPattern;
-		$scope.model.sceneCount = inputModel.sceneCount;
-		$scope.model.activeScene = inputModel.activeScene;
-		$scope.model.scenes = inputModel.scenes;
-		$scope.model.playing = inputModel.playing;
-		$scope.model.arrangementString = inputModel.arrangementString;
-		var newTracks = []
-		var i;
-		for(i=0;i<inputModel.tracks.length; i++) {
-			var track = inputModel.tracks[i]
-			//console.log(track)
-			var thisTrack = newTrack(track.i,track.j, track.trackID, track.activePatterns, track.patterns, track.voice, track.volume, track.isCollapsed) 
-			newTracks.push(thisTrack)
-		}
-		$scope.model.tracks = newTracks;
-		console.log($scope.model)
-	}
- 	
+	}	
 	
 	function play() {
 		if(!$scope.model.playing) {
@@ -309,8 +276,38 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function armPattern(track, pattern) {
-		console.log(track+" " +pattern)
 		$scope.model.armedPattern = [track, pattern]
+	}
+	
+		function writeModel(projectName) {
+		localStorage[projectName] = JSON.stringify($scope.model);
+	}
+	
+	function readModel(projectName) {
+		var inputModel = JSON.parse(localStorage[projectName]);
+		$scope.model.armedPattern = inputModel.armedPattern;
+		$scope.model.sceneCount = inputModel.sceneCount;
+		$scope.model.activeScene = inputModel.activeScene;
+		$scope.model.scenes = inputModel.scenes;
+		$scope.model.playing = inputModel.playing;
+		$scope.model.arrangementString = inputModel.arrangementString;
+		var newTracks = []
+		var i;
+		for(i=0;i<inputModel.tracks.length; i++) {
+			var track = inputModel.tracks[i]
+			//console.log(track)
+			var thisTrack = newTrack(track.i,track.j, track.trackID, track.activePatterns, track.patterns, track.voice, track.volume, track.isCollapsed) 
+			newTracks.push(thisTrack)
+		}
+		$scope.model.tracks = newTracks;
+	}
+	
+	function loadProject() {
+		readModel($scope.model.projectName)
+	}
+	
+	function saveProject() {
+		writeModel($scope.model.projectName)
 	}
 	
 	$scope.model = {'play' : play,
@@ -325,7 +322,10 @@ function TrackController($scope, $timeout) {
 					'sceneCount' :  sceneCount,
 					'addScene' : addScene,
 					'armedPattern' : false,
-					'armPattern' : armPattern};
+					'armPattern' : armPattern,
+					'projectName' : 'song1',
+					'loadProject' : loadProject,
+					'saveProject' : saveProject};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1

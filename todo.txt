@@ -1,7 +1,7 @@
 X Set arm
 * Fix arm alignment issue
-* Model specification
-* Save/load
+X Model specification
+X Save/load
 * Arrangment view
 * Consolidate MIDI.js/sampler
 
