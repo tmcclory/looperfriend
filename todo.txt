@@ -4,6 +4,14 @@ X Model specification
 X Save/load
 * Arrangment view
 * Consolidate MIDI.js/sampler
+* On-off / duration
+* BPM
+
+* Stress levels
+** n-levels of stress
+** Default 1
+** clicking and dragging up or down changes stress level
+** 
 
 * Experiment: Controllable buffer length
 
@@ -13,7 +21,7 @@ X Save/load
 ** Sleekening
 *** Better buttons
 *** Alignments
-*** Remove bullets
+X Remove bullets
 *** Better scene radio buttons
 *** Track Settings
 **** Upload sounds

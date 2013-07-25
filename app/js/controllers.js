@@ -60,7 +60,8 @@ function TrackController($scope, $timeout) {
 				}
 			}
 			if(beat<=15) {
-				armedPlayer = $timeout(function() {$scope.playArmedPattern(beat+1);},100);
+				armedPlayer = $timeout(function() {$scope.playArmedPattern(beat+1);},
+					$scope.model.millisPerBeat);
 			}
 			
 		};
@@ -69,7 +70,7 @@ function TrackController($scope, $timeout) {
 		$scope.playArmed = function(){
 			$scope.playScene($scope.model.activeScene)
 			//beat = (beat+1)%loopLength;
-		    armedPlayer = $timeout($scope.play,100);
+		    armedPlayer = $timeout($scope.play,$scope.model.millisPerBeat);
 		    
 		};
 		
@@ -79,7 +80,7 @@ function TrackController($scope, $timeout) {
 			var numBeats = 16;
 			
 			startTime = oscContext.currentTime;
-			var beatLength = .1;
+			var beatLength = $scope.model.millisPerBeat /1000;
 
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
@@ -94,7 +95,7 @@ function TrackController($scope, $timeout) {
 							//start 
 							
 							var stopTime = startTime + ((beatCount+1) * beatLength); //+ .1
-							var thisStart = startTime + ((beatCount) * beatLength) + .1
+							var thisStart = startTime + ((beatCount) * beatLength) + beatLength
 							beatCount+=1;
 							var trackBeat = pattern[b];
 							for(note in trackBeat) {
@@ -111,7 +112,7 @@ function TrackController($scope, $timeout) {
 				}
 			}
 			if($scope.model.armedPattern) {
-				armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, 100);
+				armedPlayer = $timeout(function () {$scope.playArmedPattern(0);}, $scope.model.millisPerBeat);
 		    }
 		};
 		
@@ -119,7 +120,7 @@ function TrackController($scope, $timeout) {
 			$scope.playScene($scope.model.activeScene)
 			//totalBeats+=numBeats
 			//beat = (beat+1)%loopLength;
-		    player = $timeout($scope.playBar,1600);
+		    player = $timeout($scope.playBar,16 * $scope.model.millisPerBeat); // TODO unfix 16
 		};
 		
 		 $scope.stop = function(){
@@ -154,7 +155,7 @@ function TrackController($scope, $timeout) {
 		for(i=0; i<arrangement.length; i+=1) {
 			var playFunction = (function (i) {
 				return function () {$scope.playScene(arrangement[i])}})(i)
-			player = $timeout(playFunction,1600*i);
+			player = $timeout(playFunction,16* $scope.model.millisPerBeat*i); //TODO unfix 16
 			
 		}
 	}
@@ -291,6 +292,7 @@ function TrackController($scope, $timeout) {
 		$scope.model.scenes = inputModel.scenes;
 		$scope.model.playing = inputModel.playing;
 		$scope.model.arrangementString = inputModel.arrangementString;
+		$scope.model.millisPerBeat = inputModel.millisPerBeat;
 		var newTracks = []
 		var i;
 		for(i=0;i<inputModel.tracks.length; i++) {
@@ -325,7 +327,8 @@ function TrackController($scope, $timeout) {
 					'armPattern' : armPattern,
 					'projectName' : 'song1',
 					'loadProject' : loadProject,
-					'saveProject' : saveProject};
+					'saveProject' : saveProject,
+					'millisPerBeat' : 100};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1
