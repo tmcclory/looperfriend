@@ -147,7 +147,6 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function playArrangementPosition(arrangement, i) {
-		console.log(i)
 		if(i<arrangement.length) { 
 			$scope.playScene(arrangement[i])
 			
