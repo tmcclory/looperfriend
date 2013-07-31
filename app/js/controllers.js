@@ -146,18 +146,33 @@ function TrackController($scope, $timeout) {
 		$timeout.cancel(armedPlayer);
 	}
 	
+	function playArrangementPosition(arrangement, i) {
+		console.log(i)
+		if(i<arrangement.length) { 
+			$scope.playScene(arrangement[i])
+			
+			var playFunction = (function (arrangement, j) {
+				return function () {playArrangementPosition(arrangement, j);};} (arrangement, i+1));
+			
+			player = $timeout(playFunction,16* $scope.model.millisPerBeat);
+		}
+	}
 	
 	function playArrangement(arrangement) {
 		stop()
 		var i =0;
-			startTime = oscContext.currentTime;
-		
+		startTime = oscContext.currentTime;
+		playArrangementPosition(arrangement,0);
+		/*
 		for(i=0; i<arrangement.length; i+=1) {
+			
 			var playFunction = (function (i) {
 				return function () {$scope.playScene(arrangement[i])}})(i)
 			player = $timeout(playFunction,16* $scope.model.millisPerBeat*i); //TODO unfix 16
 			
+			
 		}
+		*/
 	}
 	
 	function playArrangementString(arrangementString) {
@@ -305,7 +320,8 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function loadProject() {
-		readModel($scope.model.projectName)
+		stop();
+		readModel($scope.model.projectName);
 	}
 	
 	function saveProject() {

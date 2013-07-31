@@ -1,3 +1,4 @@
+* Parameterize period
 X Set arm
 * Fix arm alignment issue
 X Model specification
@@ -5,7 +6,7 @@ X Save/load
 * Arrangment view
 * Consolidate MIDI.js/sampler
 * On-off / duration
-* BPM
+X BPM
 
 * Stress levels
 ** n-levels of stress
