@@ -33,6 +33,25 @@ h2 {
     float:left;
     position:relative;
 }
+
+.square-off{
+	background-color:/*bfg*/#9DE0AD;
+	border-color:/*wcol*/#45ADA8;
+ 	border-style:solid;
+	border-width:1px;
+	float:left;
+	height: 10px; 
+	position:relative;
+	width: 10px;
+}
+	
+.highlight-off{
+	background-color:/*bfg*/#9DE0AD;
+}
+
+.highlight-on{
+ 	background-color:/*bng*/#E5FCC2;
+}
      
 .square-on{
  	background-color:/*bng*/#E5FCC2;
@@ -44,17 +63,8 @@ h2 {
 	position:relative;
 	width: 10px; 
 }
-	
-.square-off{
-	background-color:/*bfg*/#9DE0AD;
-	border-color:/*wcol*/#45ADA8;
- 	border-style:solid;
-	border-width:1px;
-	float:left;
-	height: 10px; 
-	position:relative;
-	width: 10px;
-}
+
+
 	
 .track-window{
 	background-color:/*wcol*/#45ADA8;

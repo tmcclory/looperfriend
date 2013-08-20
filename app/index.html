@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>My AngularJS App</title>
   <link rel="stylesheet" href="css/app.css"/>
-  <link rel="stylesheet" href="css/bootstrap.css"/>
+  <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/loop.css"/>
   
   <script src="lib/angular/angular.js"></script>
@@ -26,7 +26,7 @@
                 placeholder="song1"> <br/>
    		  	<button ng-click="model.loadProject()">Load</button>
 		  	<button ng-click="model.saveProject()">Save</button>
-		  	<button ng-click="model.newProject()">New</button>
+		  	<button ng-click="model.newModel()">New</button>
 	  	</div>
  
   		<div class="span4">
@@ -55,8 +55,8 @@
 						  			<tr ng-repeat="i in [] | range:track.i">
 						  				<td ng-repeat="j in [] | range:track.j">
 						  					<!-- <input type="checkbox"  -->
-						  					<div class="square-{{track.getCoordinate(track.patterns[p], $index,$parent.$index)}}" 
-						  					ng-click="track.switchCoordinate(track.patterns[p], $index,$parent.$index)"></div>
+						  					<div class="square-{{track.getCoordinate(track.patterns[p], $index,$parent.$index)}}"  
+						  					    ng-click="track.switchCoordinate(track.patterns[p], $index,$parent.$index)"></div>
 						            	</td>
 						            </tr>
 					            </table>

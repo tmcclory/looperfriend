@@ -7,7 +7,8 @@ function TrackController($scope, $timeout) {
 	var t,track, m, player, armedPlayer, note, model,
 		i, j, k, l, loopLength, beat, done = false, max=24,
 		activePatterns, scenes, activeScene, trackCount, sceneCount,
-		list, arrangement, arrangement2, startTime, totalBeats;
+		list, arrangement, arrangement2, startTime, totalBeats,
+		currentBeat,highlighter, demo;
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -74,6 +75,13 @@ function TrackController($scope, $timeout) {
 			$scope.playScene($scope.model.activeScene);
 		    armedPlayer = $timeout($scope.play,$scope.model.millisPerBeat);
 		    
+		};
+		
+		$scope.highlightBeat = function(beat) {
+			if(beat>0) {
+				currentBeat = (currentBeat+1)%16
+				highlighter = $timeout(function () {$scope.highlightBeat(beat-1);}, $scope.model.millisPerBeat);
+			}
 		};
 		
 		$scope.playScene = function(scene){
@@ -221,7 +229,17 @@ function TrackController($scope, $timeout) {
 			
 			scene = $scope.model.activeScene;
 			patterns = $scope.model.scenes[this.trackID][scene];
+
 			if(i in patterns) {
+				return 'on';
+			}
+			else {
+				return 'off';
+			}
+		}
+		
+		function isHighlightedBeat(i) {
+			if (currentBeat === i) {
 				return 'on';
 			}
 			else {
@@ -253,6 +271,7 @@ function TrackController($scope, $timeout) {
 			'getCoordinate' : getCoordinate,
 			'switchActivePattern' : switchActivePattern,
 			'isActivePattern' : isActivePattern,
+			'isHighlightedBeat' : isHighlightedBeat,
 			'i': i,
 			'j': j,
 			'activePatterns' : activePatterns,
@@ -284,10 +303,15 @@ function TrackController($scope, $timeout) {
 		localStorage[projectName] = JSON.stringify($scope.model);
 	}
 	
-	function readModel(projectName) {
+	function readModel(inputProject) {
 		var inputModel, newTracks, i, track, thisTrack;
 		
-		inputModel = JSON.parse(localStorage[projectName]);
+		if(typeof(inputProject)==="string") {
+			inputModel = JSON.parse(localStorage[inputProject]);
+		}
+		else {
+			inputModel = inputProject;
+		}
 		$scope.model.armedPattern = inputModel.armedPattern;
 		$scope.model.sceneCount = inputModel.sceneCount;
 		$scope.model.activeScene = inputModel.activeScene;
@@ -304,8 +328,32 @@ function TrackController($scope, $timeout) {
 		$scope.model.tracks = newTracks;
 	}
 	
+	function newModel() {
+		stop();
+		var newTracks, i, track, thisTrack;
+
+		$scope.model.armedPattern = 0;
+		$scope.model.sceneCount = 1;
+		$scope.model.activeScene = 0;
+		$scope.model.scenes = {0: [{0:true},{0:true}]};
+		$scope.model.playing = false;
+		$scope.model.arrangementString = "";
+		$scope.model.millisPerBeat = 100;
+		newTracks = [];
+		//track = inputModel.tracks[i];
+		thisTrack = newTrack(24,16,0);
+		trackCount = 1;
+		newTracks.push(thisTrack);
+		
+		$scope.model.tracks = newTracks;
+	}
+	
 	function loadProject() {
 		stop();
+		readModel($scope.model.projectName);
+	}
+	
+	function initialLoadProject() {
 		readModel($scope.model.projectName);
 	}
 
@@ -328,12 +376,16 @@ function TrackController($scope, $timeout) {
 					'armPattern' : armPattern,
 					'projectName' : 'song1',
 					'loadProject' : loadProject,
+					'initialLoadProject' : initialLoadProject,
 					'saveProject' : saveProject,
+					'newModel' : newModel,
 					'millisPerBeat' : 100};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1;
 	$scope.model.tracks = [t];
+	demo = {"arrangementString":"00001122333344445555666655556666","playing":false,"scenes":{"0":[{"0":true},{"0":true,"1":true},{"0":true,"2":true},{"0":true,"3":true},{"0":true,"3":true,"4":true},{"0":true,"3":true,"4":true},{"0":true,"3":true,"4":true}],"1":[{},{"0":true},{"0":true},{"0":true},{"0":true,"1":true},{"0":true,"1":true},{"0":true,"1":true,"2":true}],"2":[{},{},{},{},{},{"0":true},{"1":true}]},"activeScene":6,"sceneCount":7,"armedPattern":false,"projectName":"song1","millisPerBeat":100,"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true},{},{},{},{},{},{"5":true},{},{},{},{},{},{"2":true,"9":true},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"14":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"16":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"21":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{"2":true},{},{"9":true,"21":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":"104","isCollapsed":true,"index":0,"$$hashKey":"0BY"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"1":true},{},{},{},{"1":true},{},{},{},{"1":true},{},{},{},{"1":true},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{},{},{},{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{},{},{},{}],[{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":"1","trackID":1,"volume":"44","isCollapsed":true,"index":1,"$$hashKey":"0C6"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true},{"0":true},{"0":true},{},{},{},{"2":true},{"2":true},{"2":true},{},{},{},{"5":true},{"5":true},{"5":true},{},{},{},{},{},{},{},{},{}],[{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{},{},{},{},{},{},{},{},{},{}]],"voice":"3","trackID":2,"volume":"128","isCollapsed":false,"index":2,"$$hashKey":"0CE"}]};
+	$scope.model.initialLoadProject(demo);
 }
 
 
