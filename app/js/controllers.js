@@ -121,13 +121,13 @@ function TrackController($scope, $timeout) {
 		
 		 $scope.stop = function(){
 			$timeout.cancel(player);
-		}
+		};
 	}	
 	
 	function play() {
 		if(!$scope.model.playing) {
 			$scope.model.playing = true;
-			startTime = oscContext.currentTime;
+			startTime = oscContext.currentTime; //oscContext externally defined
 			totalBeats = 0;
 			player = $timeout($scope.playBar,0);
 		}
@@ -136,14 +136,14 @@ function TrackController($scope, $timeout) {
 	
 	function stop() {
 		$scope.model.playing = false;
-		$scope.stop()
+		$scope.stop();
 		$timeout.cancel(player);
 		$timeout.cancel(armedPlayer);
 	}
 	
 	function playArrangementPosition(arrangement, i) {
 		if(i<arrangement.length) { 
-			$scope.playScene(arrangement[i])
+			$scope.playScene(arrangement[i]);
 			
 			var playFunction = (function (arrangement, j) {
 				return function () {playArrangementPosition(arrangement, j);};} (arrangement, i+1));
@@ -153,20 +153,10 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function playArrangement(arrangement) {
-		stop()
+		stop();
 		var i =0;
-		startTime = oscContext.currentTime;
+		startTime = oscContext.currentTime; //oscContext is externally defined
 		playArrangementPosition(arrangement,0);
-		/*
-		for(i=0; i<arrangement.length; i+=1) {
-			
-			var playFunction = (function (i) {
-				return function () {$scope.playScene(arrangement[i])}})(i)
-			player = $timeout(playFunction,16* $scope.model.millisPerBeat*i); //TODO unfix 16
-			
-			
-		}
-		*/
 	}
 	
 	function playArrangementString(arrangementString) {
@@ -192,29 +182,32 @@ function TrackController($scope, $timeout) {
 			var activePatterns = {0:true};
 		}
 		if(typeof(patterns)==='undefined') {
-			var pattern = []
-			var patterns = []
+			var pattern, patterns;
+			pattern = [];
+			patterns = [];
 			
 			for(k=0;  k<i; k+=1) {
 				pattern.push({});
 			}
-			patterns.push(pattern)
+			patterns.push(pattern);
 		}
 		if(typeof(voice)==='undefined') {voice = 0;}
 		if(typeof(volume)==='undefined') {volume = 127;}
 		if(typeof(isCollapsed)==='undefined') {isCollapsed = false;}
 		
 		function addPattern() {
-			pattern  = []
+			var pattern  = [];
 			for(k=0;  k<i; k+=1) {
 				pattern.push({});
 			}
-			this.patterns.push(pattern)
+			this.patterns.push(pattern);
 		}
 		
 		function switchActivePattern(i) {
-			var scene = $scope.model.activeScene
-			var patterns = $scope.model.scenes[this.trackID][scene]
+			var scene, patterns;
+			
+			scene = $scope.model.activeScene;
+			patterns = $scope.model.scenes[this.trackID][scene];
 			if(i in patterns) {
 				delete patterns[i]
 			}
@@ -224,8 +217,10 @@ function TrackController($scope, $timeout) {
 		}
 		
 		function isActivePattern(i) {
-			var scene = $scope.model.activeScene;
-			var patterns = $scope.model.scenes[this.trackID][scene];
+			var scene, patterns;
+			
+			scene = $scope.model.activeScene;
+			patterns = $scope.model.scenes[this.trackID][scene];
 			if(i in patterns) {
 				return 'on';
 			}
@@ -235,11 +230,8 @@ function TrackController($scope, $timeout) {
 		}
 		
 		function getCoordinate(pattern, i,j) {
-			if(i===0) {
-				
-			}
 			if(j in pattern[i]) {
-				return 'on'
+				return 'on';
 			}
 			else {
 				return 'off';
@@ -248,14 +240,13 @@ function TrackController($scope, $timeout) {
 		
 		function switchCoordinate(pattern, i,j) {
 			if(j in pattern[i]) {
-				delete pattern[i][j]
+				delete pattern[i][j];
 			}
 			else {
 				pattern[i][j] = true;
 			}
 		}
-
-		
+	
 		return {
 			'addPattern' : addPattern,
 			'switchCoordinate' : switchCoordinate,
@@ -271,22 +262,22 @@ function TrackController($scope, $timeout) {
 			'volume' : volume,
 			'isCollapsed' : isCollapsed,
 			'index' : trackID
- 		};
+		};
 
 	}
 
 	function addTrack() {
 		var t = newTrack(24,16,trackCount);
-		$scope.model.scenes[trackCount] = []
+		$scope.model.scenes[trackCount] = [];
 		for(i=0; i<$scope.model.scenes[0].length; i+=1) {
-			$scope.model.scenes[trackCount].push({})
+			$scope.model.scenes[trackCount].push({});
 		}
 		trackCount+=1;
 		$scope.model.tracks.push(t);
 	}
 	
 	function armPattern(track, pattern) {
-		$scope.model.armedPattern = [track, pattern]
+		$scope.model.armedPattern = [track, pattern];
 	}
 	
 		function writeModel(projectName) {
@@ -302,7 +293,7 @@ function TrackController($scope, $timeout) {
 		$scope.model.playing = inputModel.playing;
 		$scope.model.arrangementString = inputModel.arrangementString;
 		$scope.model.millisPerBeat = inputModel.millisPerBeat;
-		var newTracks = []
+		var newTracks = [];
 		var i;
 		for(i=0;i<inputModel.tracks.length; i++) {
 			var track = inputModel.tracks[i]
