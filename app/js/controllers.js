@@ -6,7 +6,8 @@
 function TrackController($scope, $timeout) {
 	var t,track, m, player, armedPlayer, note, model,
 		i, j, k, l, loopLength, beat, done = false, max=24,
-		activePatterns, scenes, activeScene, trackCount, sceneCount;
+		activePatterns, scenes, activeScene, trackCount, sceneCount,
+		list, arrangement, arrangement2, startTime, totalBeats;
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -18,17 +19,17 @@ function TrackController($scope, $timeout) {
 		return objKeys;
 	}
 	scenes = {0: [{0:true},{0:true}]}; //Initial value
-	var list = 'list'
-	var arrangement = [0,1,0,1];
-	var arrangement2 =  [ [ [[[0,2],[1,2]] ,2] , [ [[3,2],[4,2]] ,2] ] ,2];
+	list = 'list';
+	arrangement = [0,1,0,1];
+	arrangement2 =  [ [ [[[0,2],[1,2]] ,2] , [ [[3,2],[4,2]] ,2] ] ,2];
 	activeScene = 0;
-	m = new MidiPlayer();
+	m = new MidiPlayer(); // m is externally defined
 	beat=0;
 	loopLength = 16;
 	trackCount = 0;
 	sceneCount = 2;
-	var startTime = 0
-	var totalBeats = 0;
+	startTime = 0;
+	totalBeats = 0;
 
 	function addScene() {
 		
@@ -43,19 +44,21 @@ function TrackController($scope, $timeout) {
 	function onPlayerLoad() {
 		var patternID, trackKeys;
 		
-		$scope.playArmedPattern = function(beat) {			
-			var track = $scope.model.tracks[$scope.model.armedPattern[0]];
-			var patternID = $scope.model.armedPattern[1];
-			var pattern = track.patterns[parseInt(patternID,10)];
+		$scope.playArmedPattern = function(beat) {	
+			var track, patternID, pattern, trackBeat, t, note, start, stop;
+					
+			track = $scope.model.tracks[$scope.model.armedPattern[0]];
+			patternID = $scope.model.armedPattern[1];
+			pattern = track.patterns[parseInt(patternID,10)];
 			if (track.isActivePattern(patternID) === 'on') {
-				var trackBeat = pattern[beat];
-				var t = oscContext.currentTime
+				trackBeat = pattern[beat];
+				t = oscContext.currentTime; // oscContext is externally defined
 	
 	
 				for(note in trackBeat) {
 	
-					var start = oscContext.currentTime;
-					var stop = start + .1; // TODO remove fixed length
+					start = oscContext.currentTime;
+					stop = start + .1; // TODO remove fixed length
 					playNote(max-parseInt(note),parseInt(track.voice), start, stop);
 				}
 			}
@@ -68,19 +71,19 @@ function TrackController($scope, $timeout) {
 		
 		
 		$scope.playArmed = function(){
-			$scope.playScene($scope.model.activeScene)
-			//beat = (beat+1)%loopLength;
+			$scope.playScene($scope.model.activeScene);
 		    armedPlayer = $timeout($scope.play,$scope.model.millisPerBeat);
 		    
 		};
 		
-		//var startTime;// = oscContext.currentTime;
 		$scope.playScene = function(scene){
-			var b =0;
-			var numBeats = 16;
+			var b, numBeats, beatLength, beatCount, pattern, stopTime,
+			thisStart, trackBeat, note;
 			
+			b =0;
+			numBeats = 16;
 			startTime = oscContext.currentTime;
-			var beatLength = $scope.model.millisPerBeat /1000;
+			beatLength = $scope.model.millisPerBeat /1000;
 
 			for(i=0; i <$scope.model.tracks.length; i+=1) {
 				track = $scope.model.tracks[i];
@@ -88,24 +91,19 @@ function TrackController($scope, $timeout) {
 				trackKeys = keys($scope.model.scenes[i][activeScene]);
 				for(j=0; j<trackKeys.length; j+=1) {
 					patternID = trackKeys[j];
-					var beatCount = 0;
-					var pattern = track.patterns[parseInt(patternID,10)];
+					beatCount = 0;
+					pattern = track.patterns[parseInt(patternID,10)];
 					if(!(i===$scope.model.armedPattern[0] && parseInt(patternID,10)===$scope.model.armedPattern[1])) {  
 						for(b=0; b<numBeats; b+=1) {
 							//start 
 							
-							var stopTime = startTime + ((beatCount+1) * beatLength); //+ .1
-							var thisStart = startTime + ((beatCount) * beatLength) + beatLength
+							stopTime = startTime + ((beatCount+1) * beatLength); //+ .1
+							thisStart = startTime + ((beatCount) * beatLength) + beatLength
 							beatCount+=1;
-							var trackBeat = pattern[b];
+							trackBeat = pattern[b];
 							for(note in trackBeat) {
 								m.queueNote(max-parseInt(note),
-							parseInt(track.voice),track.volume,thisStart); //Is this parsing performant?
-							
-								//console.log("Playing note..." + (max-note))
-								//playNote(max-parseInt(note),parseInt(track.voice), thisStart, stopTime);
-								//playSample((max-parseInt(note))%3, thisStart, stopTime);
-							
+							        parseInt(track.voice),track.volume,thisStart);
 							}
 						}
 					}
@@ -118,13 +116,10 @@ function TrackController($scope, $timeout) {
 		
 		$scope.playBar = function(bar){ 
 			$scope.playScene($scope.model.activeScene)
-			//totalBeats+=numBeats
-			//beat = (beat+1)%loopLength;
 		    player = $timeout($scope.playBar,16 * $scope.model.millisPerBeat); // TODO unfix 16
 		};
 		
 		 $scope.stop = function(){
-		 	//oscillator.stop(3);
 			$timeout.cancel(player);
 		}
 	}	
@@ -348,7 +343,7 @@ function TrackController($scope, $timeout) {
 	t = newTrack(24,16,trackCount);
 	trackCount+=1
 	$scope.model.tracks = [t]; 	
-	readModel("a")
+	//readModel("a")
 
 }
 
