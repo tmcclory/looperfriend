@@ -1,3 +1,27 @@
+# Looperfriend
+
+Looperfriend is a music sequencer using the Web Audio API. This application is 
+intended to serve as the frontend 
+
+# Design
+
+Looperfriend uses the AngularJS framework. T
+
+# Usage
+
+The beat duration setting controls the length of time per beat. The sounds that
+are generated are 'one-shot' samples, meaning that the samples will be played
+in their entirety, regardless of the beat duration. If the beat length is set 
+to a duration that is very short relative to the sample length, playback of the 
+samples may overlap in an undesirable fashion.
+
+The project name field allows users to name their projects, save these projects,
+and load them in later sessions. The projects are saved locally using the HTML5
+localStorage facility. Users can safely name the projects however they would 
+like without concern of a remote record of the project. Users should also be
+aware that clearing their browser cache may result in the loss of their 
+Looperfriend projects.
+
 # angular-seed — the seed for AngularJS apps
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.

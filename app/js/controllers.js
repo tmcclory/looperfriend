@@ -144,7 +144,7 @@ function TrackController($scope, $timeout) {
 	function playArrangementPosition(arrangement, i) {
 		if(i<arrangement.length) { 
 			$scope.playScene(arrangement[i]);
-			
+			$scope.model.activeScene = arrangement[i]
 			var playFunction = (function (arrangement, j) {
 				return function () {playArrangementPosition(arrangement, j);};} (arrangement, i+1));
 			
@@ -285,7 +285,9 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function readModel(projectName) {
-		var inputModel = JSON.parse(localStorage[projectName]);
+		var inputModel, newTracks, i, track, thisTrack;
+		
+		inputModel = JSON.parse(localStorage[projectName]);
 		$scope.model.armedPattern = inputModel.armedPattern;
 		$scope.model.sceneCount = inputModel.sceneCount;
 		$scope.model.activeScene = inputModel.activeScene;
@@ -293,13 +295,11 @@ function TrackController($scope, $timeout) {
 		$scope.model.playing = inputModel.playing;
 		$scope.model.arrangementString = inputModel.arrangementString;
 		$scope.model.millisPerBeat = inputModel.millisPerBeat;
-		var newTracks = [];
-		var i;
-		for(i=0;i<inputModel.tracks.length; i++) {
-			var track = inputModel.tracks[i]
-			//console.log(track)
-			var thisTrack = newTrack(track.i,track.j, track.trackID, track.activePatterns, track.patterns, track.voice, track.volume, track.isCollapsed) 
-			newTracks.push(thisTrack)
+		newTracks = [];
+		for(i=0;i<inputModel.tracks.length; i+=1) {
+			track = inputModel.tracks[i];
+			thisTrack = newTrack(track.i,track.j, track.trackID, track.activePatterns, track.patterns, track.voice, track.volume, track.isCollapsed); 
+			newTracks.push(thisTrack);
 		}
 		$scope.model.tracks = newTracks;
 	}
@@ -308,9 +308,9 @@ function TrackController($scope, $timeout) {
 		stop();
 		readModel($scope.model.projectName);
 	}
-	
+
 	function saveProject() {
-		writeModel($scope.model.projectName)
+		writeModel($scope.model.projectName);
 	}
 	
 	$scope.model = {'play' : play,
@@ -332,10 +332,8 @@ function TrackController($scope, $timeout) {
 					'millisPerBeat' : 100};
 
 	t = newTrack(24,16,trackCount);
-	trackCount+=1
-	$scope.model.tracks = [t]; 	
-	//readModel("a")
-
+	trackCount+=1;
+	$scope.model.tracks = [t];
 }
 
 

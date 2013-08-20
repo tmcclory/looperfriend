@@ -1,4 +1,8 @@
-/********************* Colour reference chart****************
+/*
+ 
+ TODO: Replace this color hackery with a CSS preprocessing.
+ 
+ ******************** Colour reference chart****************
 *************************** comment ********* colour ******** 
 
 box on colour       		bng              #E5FCC2
@@ -16,32 +20,44 @@ darkColor = "594F4F"
 
 */
 
+h1,h2,h3 {
+	color:/*bng*/#E5FCC2;
+}
+
+h2 {
+	border-style:solid;
+	border-width: 0 0 1px 0;
+}
  
-     #container{
-        float:left;
-        position:relative;
-     }
-     .square-on{
-     	background-color:/*bng*/#E5FCC2;
-     	border-color:/*wcol*/#45ADA8;
-     	border-style:solid;
-		border-width:1px;
-		float:left;
-		height: 10px; 
-		position:relative;
-		width: 10px; 
-	}
-	.square-off{
-		background-color:/*bfg*/#9DE0AD;
-		border-color:/*wcol*/#45ADA8;
-     	border-style:solid;
-		border-width:1px;
-		float:left;
-		height: 10px; 
-		position:relative;
-		width: 10px;
-	}
-	.track-window{
-		background-color:/*wcol*/#45ADA8;
-		/* margin:5px; */
-	}
+#container{
+    float:left;
+    position:relative;
+}
+     
+.square-on{
+ 	background-color:/*bng*/#E5FCC2;
+ 	border-color:/*wcol*/#45ADA8;
+ 	border-style:solid;
+	border-width:1px;
+	float:left;
+	height: 10px; 
+	position:relative;
+	width: 10px; 
+}
+	
+.square-off{
+	background-color:/*bfg*/#9DE0AD;
+	border-color:/*wcol*/#45ADA8;
+ 	border-style:solid;
+	border-width:1px;
+	float:left;
+	height: 10px; 
+	position:relative;
+	width: 10px;
+}
+	
+.track-window{
+	background-color:/*wcol*/#45ADA8;
+	margin:5px; 
+	width: 224px;
+}

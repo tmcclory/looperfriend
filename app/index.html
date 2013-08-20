@@ -10,50 +10,32 @@
   <script src="lib/angular/angular.js"></script>
   <script src="js/ui-bootstrap-tpls-0.3.0.js"></script>
   
-
-
 </head>
 <body>
-	
+  <h1>Looperfriend</h1>
   <div ng-controller="TrackController" >
-  	
-  	<div class="row">
-  		<div class="span4">
-		  	<button ng-click="model.play()"><i class="icon-play"></i></button>
-		  	<button ng-click="model.stop()"><i class="icon-stop"></i></button>
-		  	<button ng-click="model.addTrack()"><i class="icon-plus"></i></button>
-		  	<button ng-click="model.loadProject()">Load</button>
-		  	<button ng-click="model.saveProject()">Save</button>
-		  	
-		    <input type="text" ng-model="model.projectName" size="300"
-		               placeholder="song1"> <br/>
-		    <input type="text" ng-model="model.millisPerBeat" size="30"
-		               placeholder="100">
-	  	</div>
-	  	
-  		<div class="span4" >
-			<form name="scene">
-				<button ng-click="model.addScene()">+</button>
-				<span>
-	  				<input ng-repeat="i in [] | range:model.sceneCount"
-	  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
-	  			</span>
-	 		</form>
- 		</div>
-	  	
-	  	<div class="span4">
-		  	<button ng-click="model.playMainArrangement()">Arrangement</button>
-		        <input type="text" ng-model="model.arrangementString"  size="30"
-		               placeholder="1">
-        </div>	
-    </div>  
-  	
+  
   	<div id="container" class="row">
+		<div class="span4">
+  			<h2>Settings</h2>
+		    <h3>Beat Duration (milliseconds)</h3>
+		    <input type="text" ng-model="model.millisPerBeat" size="30"
+           		placeholder="100"><br/>
+            <h3>Project Name</h3>
+		    <input type="text" ng-model="model.projectName" size="300"
+                placeholder="song1"> <br/>
+   		  	<button ng-click="model.loadProject()">Load</button>
+		  	<button ng-click="model.saveProject()">Save</button>
+		  	<button ng-click="model.newProject()">New</button>
+	  	</div>
+ 
   		<div class="span4">
+  			<h2>Tracks</h2>
+  			<button ng-click="model.addTrack()">Add Track</button>
 		  	<ul>
 		  		<li ng-repeat="track in model.tracks" class="track-window">
-					<button ng-click="track.addPattern()">+</button>
-					<button ng-click="track.isCollapsed = !track.isCollapsed">-</button>
+					<button ng-click="track.addPattern()">Add Pattern</button>
+					<button ng-click="track.isCollapsed = !track.isCollapsed">Collapse</button>
 					<div ng-repeat="i in [] | range:track.patterns.length">
 		     			<div class="square-{{track.isActivePattern(i)}}" ng-click="track.switchActivePattern(i)"></div>
 		     		</div><br/>
@@ -67,7 +49,7 @@
 		     		</form>
 		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 			     		<tabs>
-			  				<pane ng-repeat="p in [] | range:track.patterns.length">
+			  				<pane heading={{p}} ng-repeat="p in [] | range:track.patterns.length">
 			  					<button ng-click="model.armPattern(track.index,p)">Arm</button>
 				  				<table>
 						  			<tr ng-repeat="i in [] | range:track.i">
@@ -85,7 +67,30 @@
 		  	</ul>
 	  	</div>	
   	</div>
-  </div>
+  		  	
+	<div class="span4" >
+		<h2>Scenes</h2>
+		<form name="scene">
+			<button ng-click="model.addScene()">Add Scene</button><br/>
+			<span>
+  				<input ng-repeat="i in [] | range:model.sceneCount"
+  				type="radio" ng-model="$parent.model.activeScene" ng-value="$index">
+  			</span>
+ 		</form>
+	</div>
+	  	
+  	<div class="span4">
+  		<h2>Arrangement</h2>
+
+	        <input type="text" ng-model="model.arrangementString"  size="30"
+	               placeholder="1">
+	               		  	<button ng-click="model.playMainArrangement()">Play Arrangement</button><br/>
+	    <button ng-click="model.play()">Play Scene</button><br/>
+	  	<button ng-click="model.stop()">Stop</button><br/>
+    </div>	
+</div> 
+  	
+
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
