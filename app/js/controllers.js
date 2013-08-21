@@ -353,8 +353,8 @@ function TrackController($scope, $timeout) {
 		readModel($scope.model.projectName);
 	}
 	
-	function initialLoadProject() {
-		readModel($scope.model.projectName);
+	function initialLoadProject(demo) {
+		readModel(demo);
 	}
 
 	function saveProject() {
