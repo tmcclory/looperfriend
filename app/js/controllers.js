@@ -10,7 +10,7 @@ function TrackController($scope, $timeout) {
 		list, arrangement, arrangement2, startTime, totalBeats,
 		currentBeat,highlighter, demo, voices;
 		
-	voices = ['piano', 'drums']
+	voices = ['piano','drum'];
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -281,6 +281,7 @@ function TrackController($scope, $timeout) {
 			'activePatterns' : activePatterns,
 			'patterns' : patterns,
 			'voice' : voice,
+			'voiceName' : 'piano',
 			'trackID' : trackID,
 			'volume' : volume,
 			'isCollapsed' : isCollapsed,
@@ -383,12 +384,13 @@ function TrackController($scope, $timeout) {
 					'initialLoadProject' : initialLoadProject,
 					'saveProject' : saveProject,
 					'newModel' : newModel,
-					'millisPerBeat' : 100};
+					'millisPerBeat' : 100,
+					'voices' : voices};
 
 	t = newTrack(24,16,trackCount);
 	trackCount+=1;
 	$scope.model.tracks = [t];
-	demo = {"arrangementString":"00001122333344445555666655556666","playing":false,"scenes":{"0":[{"0":true},{"0":true,"1":true},{"0":true,"2":true},{"0":true,"3":true},{"0":true,"3":true,"4":true},{"0":true,"3":true,"4":true},{"0":true,"3":true,"4":true}],"1":[{},{"0":true},{"0":true},{"0":true},{"0":true,"1":true},{"0":true,"1":true},{"0":true,"1":true,"2":true}],"2":[{},{},{},{},{},{"0":true},{"1":true}]},"activeScene":6,"sceneCount":7,"armedPattern":false,"projectName":"song1","millisPerBeat":100,"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true},{},{},{},{},{},{"5":true},{},{},{},{},{},{"2":true,"9":true},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"14":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"16":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"21":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{"2":true},{},{"9":true,"21":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":"104","isCollapsed":true,"index":0,"$$hashKey":"0BY"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"1":true},{},{},{},{"1":true},{},{},{},{"1":true},{},{},{},{"1":true},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{},{},{},{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{},{},{},{}],[{},{},{"0":true,"4":true,"5":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":"1","trackID":1,"volume":"44","isCollapsed":true,"index":1,"$$hashKey":"0C6"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true},{"0":true},{"0":true},{},{},{},{"2":true},{"2":true},{"2":true},{},{},{},{"5":true},{"5":true},{"5":true},{},{},{},{},{},{},{},{},{}],[{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"5":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{"12":true},{},{},{},{},{},{},{},{},{},{}]],"voice":"3","trackID":2,"volume":"128","isCollapsed":false,"index":2,"$$hashKey":"0CE"}]};
+	demo = {"arrangementString":"0000111100002222333322224444","playing":false,"scenes":{"0":[{"0":true,"1":true},{"0":true},{"1":true,"2":true},{"1":true,"2":true,"3":true},{"1":true,"2":true,"4":true},{}],"1":[{"0":true},{"0":true,"1":true},{"0":true,"1":true},{"0":true,"1":true,"2":true},{"0":true,"1":true,"2":true},{"0":true,"1":true,"2":true}]},"activeScene":"4","sceneCount":6,"armedPattern":0,"projectName":"song1","millisPerBeat":100,"voices":["piano","drum"],"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true,"9":true},{},{},{},{},{"4":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{"4":true,"12":true},{},{},{},{},{"19":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{},{},{},{},{},{"23":true},{"23":true},{},{},{"9":true},{"9":true},{"11":true},{},{},{},{},{},{},{},{},{}],[{},{},{"16":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"0":true,"4":true,"9":true,"19":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"voiceName":"piano","trackID":0,"volume":127,"isCollapsed":false,"index":0,"$$hashKey":"46U"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"2":true},{},{},{},{"2":true},{},{},{},{"2":true},{},{},{},{"2":true},{},{},{},{},{},{},{},{},{},{},{}],[{"0":true,"1":true},{},{},{},{},{},{"1":true},{},{},{},{},{},{"1":true},{},{},{},{},{},{},{},{},{},{},{}],[{"0":true},{},{},{},{"0":true},{"0":true},{},{},{},{},{},{"0":true},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":"1","voiceName":"piano","trackID":1,"volume":127,"isCollapsed":true,"index":1,"$$hashKey":"4U0"}]};
 	$scope.model.initialLoadProject(demo);
 }
 

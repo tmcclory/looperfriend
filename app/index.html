@@ -45,6 +45,7 @@
 		      			<input type="radio" ng-model="track.voice" value="1">  
 		      			<tt>voice</tt><br/>
 		     		</form>
+					<!-- <select ng-model="track.voiceName" ng-options="v.name for v in $scope.model.voices"></select> -->
 		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 			     		<tabs>
 			  				<pane heading={{p}} ng-repeat="p in [] | range:track.patterns.length">
