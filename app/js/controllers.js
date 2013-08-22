@@ -24,7 +24,7 @@ function TrackController($scope, $timeout) {
 	arrangement = [0,1,0,1];
 	arrangement2 =  [ [ [[[0,2],[1,2]] ,2] , [ [[3,2],[4,2]] ,2] ] ,2];
 	activeScene = 0;
-	m = new MidiPlayer(); // m is externally defined
+	//m = new MidiPlayer(); // m is externally defined
 	beat=0;
 	loopLength = 16;
 	trackCount = 0;
@@ -147,6 +147,7 @@ function TrackController($scope, $timeout) {
 	
 	
 	function stop() {
+		console.log($scope)
 		$scope.model.playing = false;
 		$scope.stop();
 		$timeout.cancel(player);
@@ -181,8 +182,7 @@ function TrackController($scope, $timeout) {
 		playArrangementString($scope.model.arrangementString);
 	}
 	
-	m.init(onPlayerLoad);
-	
+	onPlayerLoad();
 	
 	//"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"trackID":0,"volume":127,"isCollapsed":false,"index":0,"$$hashKey":"008"}]}
 	function newTrack(i,j, trackID, activePatterns, patterns, voice, volume, isCollapsed) {
