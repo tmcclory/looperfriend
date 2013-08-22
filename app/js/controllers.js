@@ -8,7 +8,9 @@ function TrackController($scope, $timeout) {
 		i, j, k, l, loopLength, beat, done = false, max=24,
 		activePatterns, scenes, activeScene, trackCount, sceneCount,
 		list, arrangement, arrangement2, startTime, totalBeats,
-		currentBeat,highlighter, demo;
+		currentBeat,highlighter, demo, voices;
+		
+	voices = ['piano', 'drums']
 	
 	function keys(obj) {
 		var i, objKeys = [];
@@ -110,8 +112,7 @@ function TrackController($scope, $timeout) {
 							beatCount+=1;
 							trackBeat = pattern[b];
 							for(note in trackBeat) {
-								console.log("Queueing at " +thisStart)
-								playSample((max-parseInt(note))%3, thisStart, thisStart +$scope.model.millisPerBeat);
+								playSample((max-parseInt(note))-1, voices[track.voice], thisStart, thisStart +$scope.model.millisPerBeat);
 								/*
 								m.queueNote(max-parseInt(note),
 							        parseInt(track.voice),track.volume,thisStart);
@@ -147,7 +148,6 @@ function TrackController($scope, $timeout) {
 	
 	
 	function stop() {
-		console.log($scope)
 		$scope.model.playing = false;
 		$scope.stop();
 		$timeout.cancel(player);
