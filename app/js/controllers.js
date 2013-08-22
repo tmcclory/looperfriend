@@ -110,8 +110,12 @@ function TrackController($scope, $timeout) {
 							beatCount+=1;
 							trackBeat = pattern[b];
 							for(note in trackBeat) {
+								console.log("Queueing at " +thisStart)
+								playSample((max-parseInt(note))%3, thisStart, thisStart +$scope.model.millisPerBeat);
+								/*
 								m.queueNote(max-parseInt(note),
 							        parseInt(track.voice),track.volume,thisStart);
+							        */
 							}
 						}
 					}
