@@ -28,4 +28,6 @@
 **** Integration 
 *** Cleanup
 *** Coding standards
+** Documentation
+*** Complete design section of README
 * Backend
