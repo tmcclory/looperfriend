@@ -19,6 +19,7 @@
 **** Raw sound
 **** MIDI
 *** TODO Change scene icon
+*** Make pattern tabs look better
 ** Code
 *** Testing
 **** Integration 
