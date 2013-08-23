@@ -33,6 +33,7 @@ function TrackController($scope, $timeout) {
 	sceneCount = 2;
 	startTime = 0;
 	totalBeats = 0;
+	
 
 	function addScene() {
 		
@@ -204,6 +205,7 @@ function TrackController($scope, $timeout) {
 			patterns.push(pattern);
 		}
 		if(typeof(voice)==='undefined') {voice = 0;}
+		if(typeof(voiceName)==='undefined') {voiceName ={name:'piano'};}
 		if(typeof(volume)==='undefined') {volume = 127;}
 		if(typeof(isCollapsed)==='undefined') {isCollapsed = false;}
 		
@@ -334,7 +336,6 @@ function TrackController($scope, $timeout) {
 	}
 	
 	function newModel() {
-		console.log($scope.model)
 		stop();
 		var newTracks, i, track, thisTrack;
 
