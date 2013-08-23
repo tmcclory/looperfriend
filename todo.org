@@ -1,0 +1,24 @@
+* Frontend
+** Features
+*** Voice selection
+**** TODO Drop menu
+**** Add voices
+*** Note duration
+**** Variable length note
+***** Model end
+***** Interface
+**** Non stepwise notes
+***** Model
+***** Interface
+*** Keymapping
+**** TODO Choose base key
+**** Chord mappings
+**** Arbitrary mappings
+*** Render to file
+**** Raw sound
+**** MIDI
+** Code
+*** Testing
+**** Integration 
+*** Coding standards
+* Backend
