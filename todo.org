@@ -20,6 +20,9 @@
 **** MIDI
 *** TODO Change scene icon
 *** Make pattern tabs look better
+**** Transparent tabs
+*** Armed pattern
+*** Highlight time
 ** Code
 *** Testing
 **** Integration 
