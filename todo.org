@@ -1,7 +1,8 @@
 * Frontend
 ** Features
 *** Voice selection
-**** TODO Drop menu
+**** DONE Drop menu
+**** TODO Set up default voice
 **** Add voices
 *** Note duration
 **** Variable length note
@@ -17,8 +18,10 @@
 *** Render to file
 **** Raw sound
 **** MIDI
+*** TODO Change scene icon
 ** Code
 *** Testing
 **** Integration 
+*** Cleanup
 *** Coding standards
 * Backend
