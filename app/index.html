@@ -40,11 +40,6 @@
 		     			<div class="square-{{track.isActivePattern(i)}}" ng-click="track.switchActivePattern(i)"></div>
 		     		</div><br/>
 		     		<div collapse="track.isCollapsed">
-		  			<form name="voice">
-		      			<input type="radio" ng-model="track.voice" value="0">   
-		      			<input type="radio" ng-model="track.voice" value="1">  
-		      			<tt>voice</tt><br/>
-		     		</form>
 					<select ng-model="track.voiceName" ng-options="v.name for v in model.voices"></select>
 		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 			     		<tabs>
