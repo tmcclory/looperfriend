@@ -15,9 +15,9 @@ for(i=0; i<3; i+=1) {
 	requests[i].send();
 }
 
-for(i=0; i<24; i+=1) {
+for(i=0; i<88; i+=1) {
 	requests[i] = new XMLHttpRequest();
-	requests[i].open('GET', './assets/samples/piano/'+(i+36)+".mp3", true);
+	requests[i].open('GET', './assets/samples/piano/'+(i)+".mp3", true);
 	requests[i].responseType = 'arraybuffer';
 	requests[i].addEventListener('load', bufferSoundOfI(i, pianoSources), false);
 	requests[i].send();

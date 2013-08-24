@@ -41,6 +41,7 @@
 		     		</div><br/>
 		     		<div collapse="track.isCollapsed">
 					<select ng-model="track.voiceName" ng-options="v.name for v in model.voices"></select>
+		     		<form>Base Key:<input type="number" ng-model="track.lowKey" min="0" max="63"></form>
 		     		<input type="range" min="0" max="255" ng-model="track.volume"/></br>
 			     		<tabs>
 			  				<pane heading={{p}} ng-repeat="p in [] | range:track.patterns.length">
