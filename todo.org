@@ -12,7 +12,8 @@
 ***** Model
 ***** Interface
 *** Keymapping
-**** TODO Choose base key
+**** DONE Choose base key
+**** Make Base key look nice
 **** Chord mappings
 **** Arbitrary mappings
 *** Render to file
@@ -23,6 +24,7 @@
 **** Transparent tabs
 *** Armed pattern
 *** Highlight time
+*** Disable 'Play' until load completes
 ** Code
 *** Testing
 **** Integration 
