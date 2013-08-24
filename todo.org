@@ -32,4 +32,7 @@
 *** Coding standards
 ** Documentation
 *** Complete design section of README
+** Bugs
+*** Sample song crashes on added track
+*** Volume slider not working for sampler
 * Backend
