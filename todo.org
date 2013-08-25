@@ -13,7 +13,7 @@
 ***** Interface
 *** Keymapping
 **** DONE Choose base key
-**** Make Base key look nice
+**** TODO Make Base key look nice
 **** Chord mappings
 **** Arbitrary mappings
 *** Render to file
