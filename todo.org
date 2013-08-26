@@ -27,6 +27,7 @@
 *** Disable 'Play' until load completes
 ** Code
 *** Testing
+**** TODO Comment all code and TDD build
 **** Integration 
 *** Cleanup
 *** Coding standards
