@@ -35,6 +35,7 @@
 ** Documentation
 *** Complete design section of README
 ** Bugs
+*** Wait for samples too load before enabling play state
 *** Sample song crashes on added track
 *** Volume slider not working for sampler
 * Backend
