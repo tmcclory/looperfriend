@@ -30,6 +30,7 @@
 **** TODO Comment all code and TDD build
 **** Integration 
 *** Cleanup
+**** Create partials for the different sections
 *** Coding standards
 ** Documentation
 *** Complete design section of README
