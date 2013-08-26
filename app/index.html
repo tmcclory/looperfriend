@@ -8,9 +8,12 @@
   <link rel="stylesheet" href="css/loop.css"/>
   
   <script src="lib/angular/angular.js"></script>
+  <script src="js/jquery-1.6.2.min.js"></script>
   <script src="js/ui-bootstrap-tpls-0.3.0.js"></script>
   
 </head>
+<!--
+
 <body>
   <h1>Looperfriend</h1>
   <div ng-controller="TrackController" >
@@ -49,7 +52,6 @@
 				  				<table>
 						  			<tr ng-repeat="i in [] | range:track.i">
 						  				<td ng-repeat="j in [] | range:track.j">
-						  					<!-- <input type="checkbox"  -->
 						  					<div class="square-{{track.getCoordinate(track.patterns[p], $index,$parent.$index)}}"  
 						  					    ng-click="track.switchCoordinate(track.patterns[p], $index,$parent.$index)"></div>
 						            	</td>
@@ -85,7 +87,7 @@
     </div>	
 </div> 
   	
-
+-->
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
