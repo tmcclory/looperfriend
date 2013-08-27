@@ -406,12 +406,6 @@ function TrackController($scope, $timeout) {
 
 
 angular.module('looperfriend.controllers', []).
-  controller('MyCtrl1', [function() {
-
-  }])
-  .controller('MyCtrl2', [function() {
-
-  }]).
   controller('TrackController',[function($scope) {		
 		function newTrack(i,j) {
 			if(typeof(i)==='undefined') {i = 16;}
