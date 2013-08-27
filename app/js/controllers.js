@@ -400,29 +400,4 @@ function TrackController($scope, $timeout) {
 	$scope.model.tracks = [t];
 	demo = {"arrangementString":"0000111100002222333322224444","playing":false,"scenes":{"0":[{"0":true,"1":true},{"0":true},{"1":true,"2":true},{"1":true,"2":true,"3":true},{"1":true,"2":true,"4":true},{}],"1":[{"0":true},{"0":true,"1":true},{"0":true,"1":true},{"0":true,"1":true,"2":true},{"0":true,"1":true,"2":true},{"0":true,"1":true,"2":true}]},"activeScene":"1","sceneCount":6,"armedPattern":0,"projectName":"song1","millisPerBeat":100,"voices":[{"name":"piano"},{"name":"drum"}],"tracks":[{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"0":true,"9":true},{},{},{},{},{"4":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{"4":true,"12":true},{},{},{},{},{"19":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{},{},{},{},{},{},{"23":true},{"23":true},{},{},{"9":true},{"9":true},{"11":true},{},{},{},{},{},{},{},{},{}],[{},{},{"16":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],[{},{},{"0":true,"4":true,"9":true,"19":true},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":0,"voiceName":{"name":"piano"},"trackID":0,"volume":127,"isCollapsed":true,"index":0,"lowKey":36,"$$hashKey":"004"},{"i":24,"j":16,"activePatterns":{"0":true},"patterns":[[{"2":true},{},{},{},{"2":true},{},{},{},{"2":true},{},{},{},{"2":true},{},{},{},{},{},{},{},{},{},{},{}],[{"0":true,"1":true},{},{},{},{},{},{"1":true},{},{},{},{},{},{"1":true},{},{},{},{},{},{},{},{},{},{},{}],[{"0":true},{},{},{},{"0":true},{"0":true},{},{},{},{},{},{"0":true},{},{},{},{},{},{},{},{},{},{},{},{}]],"voice":"1","voiceName":{"name":"drum"},"trackID":1,"volume":127,"isCollapsed":false,"index":1,"lowKey":42,"$$hashKey":"008"}]}
 	$scope.model.initialLoadProject(demo);
-	
 }
-
-
-
-angular.module('looperfriend.controllers', []).
-  controller('TrackController',[function($scope) {	
-  	/*	
-		function newTrack(i,j) {
-			if(typeof(i)==='undefined') {i = 16;}
-			if(typeof(j)==='undefined') {j = 16;}
-			return {
-				'voice' : 0,
-				'i': i,
-				'j': j,
-				'pattern' : []
-			};
-		}
-		var t = newTrack(16,16,trackCount);
-		trackCount+=1;
-		$scope.tracks = [t];
-		*/
-	}
-	
-  
-  ]);
