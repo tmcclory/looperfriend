@@ -406,7 +406,8 @@ function TrackController($scope, $timeout) {
 
 
 angular.module('looperfriend.controllers', []).
-  controller('TrackController',[function($scope) {		
+  controller('TrackController',[function($scope) {	
+  	/*	
 		function newTrack(i,j) {
 			if(typeof(i)==='undefined') {i = 16;}
 			if(typeof(j)==='undefined') {j = 16;}
@@ -420,6 +421,8 @@ angular.module('looperfriend.controllers', []).
 		var t = newTrack(16,16,trackCount);
 		trackCount+=1;
 		$scope.tracks = [t];
+		*/
 	}
+	
   
   ]);
