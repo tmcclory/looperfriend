@@ -1,0 +1,27 @@
+* Model
+** Sequencer
+*** Patterns
+**** (Sample, start, end)
+** Sampler
+** Scene
+** Arrangments
+* Controllers
+* Services
+
+* Sketch
+** html
+
+*** body
+**** profile
+**** project-explorer
+***** mine
+***** others
+**** project
+***** samples
+***** sequencers
+****** Short
+****** Long
+***** scenes
+****** Icon
+***** arrangements
+      
